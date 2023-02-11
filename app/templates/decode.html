@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 {% block title %}<title>Decode</title>{% endblock %}
 {% block main %}
-    <p>Placeholder text decode</p>
+    <h1>Decode</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.csrf_token }}
+        <div>{{ form.image.label }}: {{ form.image }}</div>
+    </form>
 {% endblock %}
