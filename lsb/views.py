@@ -13,12 +13,12 @@ def index():
 
 
 @bp_lsb.route("/encode/")
-def encode():
+def encode_page():
     form = EncodeForm()
     return render_template("encode.html", form=form)
 
 
 @bp_lsb.route("/decode/")
-def decode():
+def decode_page():
     form = DecodeForm()
     return render_template("decode.html", form=form)
