@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template
 
+from app.forms import EncodeForm
+
 bp = Blueprint("lsb", __name__, url_prefix="/lsb")
 
 
@@ -10,7 +12,8 @@ def index():
 
 @bp.route("/encode/")
 def encode():
-    return render_template("encode.html")
+    form = EncodeForm()
+    return render_template("encode.html", form=form)
 
 
 @bp.route("/decode/")
