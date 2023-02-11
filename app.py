@@ -3,18 +3,16 @@ import os
 from flask import Flask, redirect
 from flask_wtf import CSRFProtect
 
-from . import lsb
+from lsb import views
 
 
 def create_app():
-    # create and configure the app
+    # create and configure the lsb
     app = Flask(__name__)
-    app.config.from_mapping(
-        SECRET_KEY=os.environ.get("FLASK_SECRET_KEY", "dev"),
-    )
+    app.config.from_object("config.DevConfig")
     csrf = CSRFProtect()
     csrf.init_app(app)
-    app.register_blueprint(lsb.bp)
+    app.register_blueprint(views.bp_lsb)
 
     @app.route("/")
     def index_redirect():
