@@ -6,5 +6,6 @@
         {{ form.csrf_token }}
         <div>{{ form.message.label }}: {{ form.message }}</div>
         <div>{{ form.image.label }}: {{ form.image(accept="image/png, image/jpeg") }}</div>
+        <button>Submit</button>
     </form>
 {% endblock %}
