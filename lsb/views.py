@@ -1,3 +1,4 @@
+from filetype import filetype
 from flask import Blueprint, request
 from flask import render_template
 
@@ -14,17 +15,30 @@ def index():
 @bp_lsb.route("/encode/", methods=["GET", "POST"])
 def encode_page():
     form = EncodeForm()
+    error = None
     if request.method == "POST" and form.validate_on_submit():
-        encode(form.message.data, form.image.data)
-    return render_template("encode.html", form=form)
+        if verify_image(form.image.data):
+            encode(form.message.data, form.image.data)
+        else:
+            error = "Invalid image."
+    return render_template("encode.html", form=form, error=error)
 
 
 @bp_lsb.route("/decode/", methods=["GET", "POST"])
 def decode_page():
     form = DecodeForm()
+    error = None
     if request.method == "POST" and form.validate_on_submit():
-        decode(form.image.data)
-    return render_template("decode.html", form=form)
+        if verify_image(form.image.data):
+            decode(form.image.data)
+        else:
+            error = "Invalid image."
+    return render_template("decode.html", form=form, error=error)
+
+
+def verify_image(image):
+    img_type = filetype.guess(image).mime
+    return (img_type == "image/jpeg") or (img_type == "image/png")
 
 
 def encode(message, image):
