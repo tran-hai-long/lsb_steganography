@@ -1,5 +1,3 @@
-import os
-
 from flask import Flask, redirect
 from flask_talisman import Talisman
 from flask_wtf import CSRFProtect
