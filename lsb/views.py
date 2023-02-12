@@ -16,14 +16,14 @@ def index():
 @bp_lsb.route("/encode/", methods=["GET", "POST"])
 def encode_page():
     form = EncodeForm()
-    error = None
+    error: str = ""
     if request.method == "POST" and form.validate_on_submit():
         if verify_image(form.image.data):
-            image = Image.open(form.image.data)
-            msg_with_delimiter = form.message.data + "#end#"
+            image: Image = Image.open(form.image.data)
+            msg_with_delimiter: str = form.message.data + "#end#"
             if verify_ascii(msg_with_delimiter):
-                bin_msg_with_delimiter = ascii_str_to_bin(msg_with_delimiter)
-                channel = verify_channel(image)
+                bin_msg_with_delimiter: str = ascii_str_to_bin(msg_with_delimiter)
+                channel: int = verify_channel(image)
                 if channel:
                     if check_if_msg_fit_in_img(bin_msg_with_delimiter, image, channel):
                         encode(bin_msg_with_delimiter, image, channel)
@@ -41,7 +41,7 @@ def encode_page():
 @bp_lsb.route("/decode/", methods=["GET", "POST"])
 def decode_page():
     form = DecodeForm()
-    error = None
+    error: str = ""
     if request.method == "POST" and form.validate_on_submit():
         if verify_image(form.image.data):
             decode(form.image.data)
@@ -75,9 +75,9 @@ def verify_channel(image):
             return 0
 
 
-def check_if_msg_fit_in_img(bin_message, image, channel):
-    max_size = image.width * image.height * channel / 8
-    return len(bin_message) < max_size
+def check_if_msg_fit_in_img(bin_msg, image, channel):
+    max_size: float = image.width * image.height * channel / 8
+    return len(bin_msg) < max_size
 
 
 def encode(message, image, channel):
