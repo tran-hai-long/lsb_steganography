@@ -20,19 +20,19 @@ def encode_page():
     if request.method == "POST" and form.validate_on_submit():
         if verify_image(form.image.data):
             image = Image.open(form.image.data)
-            message_with_delimiter = form.message.data + "#end#"
-            if not verify_ascii(message_with_delimiter):
-                error = "Only ASCII messages are supported."
-            else:
-                binary_message_with_delimiter = ascii_str_to_bin(message_with_delimiter)
+            msg_with_delimiter = form.message.data + "#end#"
+            if verify_ascii(msg_with_delimiter):
+                bin_msg_with_delimiter = ascii_str_to_bin(msg_with_delimiter)
                 channel = verify_channel(image)
                 if channel:
-                    if check_if_msg_fit_in_img(binary_message_with_delimiter, image, channel):
-                        encode(binary_message_with_delimiter, image, channel)
+                    if check_if_msg_fit_in_img(bin_msg_with_delimiter, image, channel):
+                        encode(bin_msg_with_delimiter, image, channel)
                     else:
                         error = "The message does not fit in the image."
                 else:
-                    error = "Only images with RGB or RGBA color channel are supported."
+                    error = "Only PNG images with RGB or RGBA color channel are supported."
+            else:
+                error = "Only ASCII messages are supported."
         else:
             error = "PNG images only."
     return render_template("encode.html", form=form, error=error)

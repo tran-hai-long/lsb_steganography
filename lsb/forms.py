@@ -6,8 +6,8 @@ from wtforms.validators import DataRequired
 
 class EncodeForm(FlaskForm):
     message = StringField("Message", validators=[DataRequired()])
-    image = FileField("Image", validators=[FileRequired(), FileAllowed(["png"], "Image required.")])
+    image = FileField("Image", validators=[FileRequired(), FileAllowed(["png"], "PNG image required.")])
 
 
 class DecodeForm(FlaskForm):
-    image = FileField("Image", validators=[FileRequired(), FileAllowed(["png"], "Image required.")])
+    image = FileField("Image", validators=[FileRequired(), FileAllowed(["png"], "PNG image required.")])
