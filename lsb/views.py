@@ -1,3 +1,4 @@
+from PIL import Image
 from filetype import filetype
 from flask import Blueprint, request
 from flask import render_template
@@ -38,11 +39,12 @@ def decode_page():
 
 def verify_image(image):
     img_type = filetype.guess(image).mime
-    return (img_type == "image/jpeg") or (img_type == "image/png")
+    return img_type == "image/png"
 
 
 def encode(message, image):
-    pass
+    img = Image.open(image)
+    print(img.height, img.width)
 
 
 def decode(image):

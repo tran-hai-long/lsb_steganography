@@ -10,7 +10,7 @@
                 {% for error in form.message.errors %}{{ error }}{% endfor %}
             </p>
         {% endif %}
-        <div>{{ form.image.label }}: {{ form.image(accept="image/png, image/jpeg") }}</div>
+        <div>{{ form.image.label }}: {{ form.image(accept="image/png") }}</div>
         {% if form.image.errors %}
             <p>
                 {% for error in form.image.errors %}{{ error }}{% endfor %}
