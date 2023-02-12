@@ -19,9 +19,22 @@ def encode_page():
     error = None
     if request.method == "POST" and form.validate_on_submit():
         if verify_image(form.image.data):
-            encode(form.message.data, form.image.data)
+            image = Image.open(form.image.data)
+            message_with_delimiter = form.message.data + "#end#"
+            if not verify_ascii(message_with_delimiter):
+                error = "Only ASCII messages are supported."
+            else:
+                binary_message_with_delimiter = ascii_str_to_bin(message_with_delimiter)
+                channel = verify_channel(image)
+                if channel:
+                    if check_if_msg_fit_in_img(binary_message_with_delimiter, image, channel):
+                        encode(binary_message_with_delimiter, image, channel)
+                    else:
+                        error = "The message does not fit in the image."
+                else:
+                    error = "Only images with RGB or RGBA color channel are supported."
         else:
-            error = "Invalid image."
+            error = "PNG images only."
     return render_template("encode.html", form=form, error=error)
 
 
@@ -37,14 +50,35 @@ def decode_page():
     return render_template("decode.html", form=form, error=error)
 
 
-def verify_image(image):
-    img_type = filetype.guess(image).mime
-    return img_type == "image/png"
+def verify_image(file):
+    return filetype.guess(file).mime == "image/png"
 
 
-def encode(message, image):
-    img = Image.open(image)
-    print(img.height, img.width)
+def verify_ascii(message):
+    return all(ord(char) < 128 for char in message)
+
+
+def ascii_str_to_bin(string):
+    return "".join([format(ord(char), "08b") for char in string])
+
+
+def verify_channel(image):
+    match image.mode:
+        case "RGB":
+            return 3
+        case "RGBA":
+            return 4
+        case _:
+            return 0
+
+
+def check_if_msg_fit_in_img(bin_message, image, channel):
+    max_size = image.width * image.height * channel / 8
+    return len(bin_message) < max_size
+
+
+def encode(message, image, channel):
+    pass
 
 
 def decode(image):
