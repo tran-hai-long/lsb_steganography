@@ -55,7 +55,10 @@ def verify_image(file):
 
 
 def verify_ascii(message):
-    return all(ord(char) < 128 for char in message)
+    for char in message:
+        if ord(char) >= 128:
+            return False
+    return True
 
 
 def ascii_str_to_bin(string):
