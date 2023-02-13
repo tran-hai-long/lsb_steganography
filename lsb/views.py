@@ -25,6 +25,7 @@ def encode_page():
         return render_template("encode.html", form=form, error="ASCII characters only.")
     if not verify_png(form.image.data):
         return render_template("encode.html", form=form, error="PNG images only.")
+    # Delimiter is used to signal the end of message
     msg_with_delimiter: str = form.message.data + "#end#"
     bin_msg_with_delimiter: str = ascii_str_to_bin(msg_with_delimiter)
     image: Image = Image.open(form.image.data)
@@ -33,6 +34,7 @@ def encode_page():
         return render_template("encode.html", form=form, error="RGB or RGBA color channel only.")
     if not check_if_msg_fit_in_img(bin_msg_with_delimiter, image, channel):
         return render_template("encode.html", form=form, error="The message does not fit in the image.")
+    # Pillow Image objects can not be displayed in HTML, thus it is necessary to convert it to base64
     result_base64 = encode(bin_msg_with_delimiter, image)
     return render_template("encode.html", form=form, result=result_base64)
 
@@ -63,6 +65,8 @@ def verify_ascii(message):
     return True
 
 
+# For each ASCII character, first convert it to Unicode code point form, then format it to binary form.
+# Pad 0 to the left if the binary string has less than 8 characters, for consistency.
 def ascii_str_to_bin(string):
     return "".join([format(ord(char), "08b") for char in string])
 
@@ -99,12 +103,14 @@ def encode(bin_msg, image):
         pixel_count += 1
     result_image = Image.new(mode=image.mode, size=(image.width, image.height))
     result_image.putdata(pixel_list)
+    # Keep the image in memory for now, may store it in disk in the future
     buffered = BytesIO()
     result_image.save(buffered, format="PNG")
     result_base64 = base64.b64encode(buffered.getvalue()).decode("utf-8")
     return result_base64
 
 
+# Change the last bit of color to the same as msg_bit
 def merge_lsb(color, msg_bit):
     if msg_bit == "1":
         return color | 1
@@ -128,6 +134,8 @@ def decode(image):
 def bin_to_ascii_str(bin_msg_with_delimiter):
     bin_index: int = 0
     result_with_delimiter: str = ""
+    # Get every 8 character in bin_msg to form a binary number, convert it to Unicode code point number,
+    # then convert it to ASCII char
     while (bin_index + 8) < len(bin_msg_with_delimiter):
         char_ord = int(bin_msg_with_delimiter[bin_index:(bin_index + 8)], 2)
         result_with_delimiter += chr(char_ord)
