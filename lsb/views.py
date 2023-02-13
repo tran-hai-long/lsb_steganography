@@ -1,3 +1,6 @@
+import base64
+from io import BytesIO
+
 from PIL import Image
 from filetype import filetype
 from flask import Blueprint, request
@@ -22,7 +25,7 @@ def encode_page():
         return render_template("encode.html", form=form, error="ASCII characters only.")
     if not verify_png(form.image.data):
         return render_template("encode.html", form=form, error="PNG images only.")
-    msg_with_delimiter: str = form.message.data + "#end#"
+    msg_with_delimiter: str = form.message.data
     bin_msg_with_delimiter: str = ascii_str_to_bin(msg_with_delimiter)
     image: Image = Image.open(form.image.data)
     channel: int = verify_channel(image)
@@ -30,8 +33,8 @@ def encode_page():
         return render_template("encode.html", form=form, error="RGB or RGBA color channel only.")
     if not check_if_msg_fit_in_img(bin_msg_with_delimiter, image, channel):
         return render_template("encode.html", form=form, error="The message does not fit in the image.")
-    encode(bin_msg_with_delimiter, image)  # encode() will return "result" Image to be used in the next line.
-    return render_template("encode.html", form=form, result=None)
+    result_base64 = encode(bin_msg_with_delimiter, image)
+    return render_template("encode.html", form=form, result=result_base64)
 
 
 @bp_lsb.route("/decode/", methods=["GET", "POST"])
@@ -79,10 +82,10 @@ def check_if_msg_fit_in_img(bin_msg, image, channel):
 def encode(bin_msg, image):
     pixel_list: list = list(image.getdata())
     bin_msg_index: int = 0
-    pixel_count = 0
+    pixel_count: int = 0
     for pixel in pixel_list:
         pixel: list = list(pixel)
-        color_channel = 0
+        color_channel: int = 0
         for color in pixel:
             if bin_msg_index < len(bin_msg):
                 pixel[color_channel] = merge_lsb(color, bin_msg[bin_msg_index])
@@ -91,6 +94,12 @@ def encode(bin_msg, image):
         pixel: tuple = tuple(pixel)
         pixel_list[pixel_count] = pixel
         pixel_count += 1
+    result_image = Image.new(mode=image.mode, size=(image.height, image.width))
+    result_image.putdata(pixel_list)
+    buffered = BytesIO()
+    result_image.save(buffered, format="PNG")
+    result_base64 = base64.b64encode(buffered.getvalue()).decode("utf-8")
+    return result_base64
 
 
 def merge_lsb(color, msg_bit):
