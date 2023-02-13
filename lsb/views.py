@@ -25,7 +25,7 @@ def encode_page():
         return render_template("encode.html", form=form, error="ASCII characters only.")
     if not verify_png(form.image.data):
         return render_template("encode.html", form=form, error="PNG images only.")
-    msg_with_delimiter: str = form.message.data
+    msg_with_delimiter: str = form.message.data + "#end"
     bin_msg_with_delimiter: str = ascii_str_to_bin(msg_with_delimiter)
     image: Image = Image.open(form.image.data)
     channel: int = verify_channel(image)
