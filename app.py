@@ -9,7 +9,7 @@ def create_app():
     # create and configure the lsb
     app = Flask(__name__)
     app.config.from_object("config.DevConfig")
-    Talisman(app)
+    # Talisman(app)
     csrf = CSRFProtect()
     csrf.init_app(app)
     app.register_blueprint(views.bp_lsb)
