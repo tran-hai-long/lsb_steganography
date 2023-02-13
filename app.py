@@ -10,8 +10,8 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object("config.DevConfig")
     csp = {
-        'default-src': "\'self\'",
-        'img-src': ["\'self\'", "data:"]
+        "default-src": "\'self\'",
+        "img-src": ["\'self\'", "data:"]
     }
     Talisman(app, content_security_policy=csp)
     csrf = CSRFProtect()
