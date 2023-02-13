@@ -16,26 +16,22 @@ def index():
 @bp_lsb.route("/encode/", methods=["GET", "POST"])
 def encode_page():
     form = EncodeForm()
-    error: str = ""
-    if request.method == "POST" and form.validate_on_submit():
-        if verify_image(form.image.data):
-            image: Image = Image.open(form.image.data)
-            msg_with_delimiter: str = form.message.data + "#end#"
-            if verify_ascii(msg_with_delimiter):
-                bin_msg_with_delimiter: str = ascii_str_to_bin(msg_with_delimiter)
-                channel: int = verify_channel(image)
-                if channel:
-                    if check_if_msg_fit_in_img(bin_msg_with_delimiter, image, channel):
-                        encode(bin_msg_with_delimiter, image, channel)
-                    else:
-                        error = "The message does not fit in the image."
-                else:
-                    error = "Only PNG images with RGB or RGBA color channel are supported."
-            else:
-                error = "Only ASCII messages are supported."
-        else:
-            error = "PNG images only."
-    return render_template("encode.html", form=form, error=error)
+    if request.method != "POST" or not form.validate_on_submit():
+        return render_template("encode.html", form=form)
+    if not verify_ascii(form.message.data):
+        return render_template("encode.html", form=form, error="ASCII characters only.")
+    if not verify_png(form.image.data):
+        return render_template("encode.html", form=form, error="PNG images only.")
+    msg_with_delimiter: str = form.message.data + "#end#"
+    bin_msg_with_delimiter: str = ascii_str_to_bin(msg_with_delimiter)
+    image: Image = Image.open(form.image.data)
+    channel: int = verify_channel(image)
+    if not channel:
+        return render_template("encode.html", form=form, error="RGB or RGBA color channel only.")
+    if not check_if_msg_fit_in_img(bin_msg_with_delimiter, image, channel):
+        return render_template("encode.html", form=form, error="The message does not fit in the image.")
+    encode(bin_msg_with_delimiter, image, channel)  # encode() will return "result" Image to be used in the next line.
+    return render_template("encode.html", form=form, result=None)
 
 
 @bp_lsb.route("/decode/", methods=["GET", "POST"])
@@ -43,14 +39,14 @@ def decode_page():
     form = DecodeForm()
     error: str = ""
     if request.method == "POST" and form.validate_on_submit():
-        if verify_image(form.image.data):
+        if verify_png(form.image.data):
             decode(form.image.data)
         else:
             error = "Invalid image."
     return render_template("decode.html", form=form, error=error)
 
 
-def verify_image(file):
+def verify_png(file):
     return filetype.guess(file).mime == "image/png"
 
 
