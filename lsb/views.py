@@ -94,7 +94,7 @@ def encode(bin_msg, image):
         pixel: tuple = tuple(pixel)
         pixel_list[pixel_count] = pixel
         pixel_count += 1
-    result_image = Image.new(mode=image.mode, size=(image.height, image.width))
+    result_image = Image.new(mode=image.mode, size=(image.width, image.height))
     result_image.putdata(pixel_list)
     buffered = BytesIO()
     result_image.save(buffered, format="PNG")
