@@ -30,7 +30,7 @@ def encode_page():
         return render_template("encode.html", form=form, error="RGB or RGBA color channel only.")
     if not check_if_msg_fit_in_img(bin_msg_with_delimiter, image, channel):
         return render_template("encode.html", form=form, error="The message does not fit in the image.")
-    encode(bin_msg_with_delimiter, image, channel)  # encode() will return "result" Image to be used in the next line.
+    encode(bin_msg_with_delimiter, image)  # encode() will return "result" Image to be used in the next line.
     return render_template("encode.html", form=form, result=None)
 
 
@@ -72,12 +72,32 @@ def verify_channel(image):
 
 
 def check_if_msg_fit_in_img(bin_msg, image, channel):
-    max_size: float = image.width * image.height * channel / 8
+    max_size: float = image.width * image.height * channel
     return len(bin_msg) < max_size
 
 
-def encode(message, image, channel):
-    pass
+def encode(bin_msg, image):
+    pixel_list: list = list(image.getdata())
+    bin_msg_index: int = 0
+    pixel_count = 0
+    for pixel in pixel_list:
+        pixel: list = list(pixel)
+        color_channel = 0
+        for color in pixel:
+            if bin_msg_index < len(bin_msg):
+                pixel[color_channel] = merge_lsb(color, bin_msg[bin_msg_index])
+                bin_msg_index += 1
+                color_channel += 1
+        pixel: tuple = tuple(pixel)
+        pixel_list[pixel_count] = pixel
+        pixel_count += 1
+
+
+def merge_lsb(color, msg_bit):
+    if msg_bit == "1":
+        return color | 1
+    else:
+        return color & ~1
 
 
 def decode(image):
