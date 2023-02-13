@@ -25,7 +25,7 @@ def encode_page():
         return render_template("encode.html", form=form, error="ASCII characters only.")
     if not verify_png(form.image.data):
         return render_template("encode.html", form=form, error="PNG images only.")
-    msg_with_delimiter: str = form.message.data + "#end"
+    msg_with_delimiter: str = form.message.data + "#end#"
     bin_msg_with_delimiter: str = ascii_str_to_bin(msg_with_delimiter)
     image: Image = Image.open(form.image.data)
     channel: int = verify_channel(image)
@@ -40,13 +40,16 @@ def encode_page():
 @bp_lsb.route("/decode/", methods=["GET", "POST"])
 def decode_page():
     form = DecodeForm()
-    error: str = ""
-    if request.method == "POST" and form.validate_on_submit():
-        if verify_png(form.image.data):
-            decode(form.image.data)
-        else:
-            error = "Invalid image."
-    return render_template("decode.html", form=form, error=error)
+    if request.method != "POST" or not form.validate_on_submit():
+        return render_template("decode.html", form=form)
+    if not verify_png(form.image.data):
+        return render_template("decode.html", form=form, error="PNG images only.")
+    image: Image = Image.open(form.image.data)
+    channel: int = verify_channel(image)
+    if not channel:
+        return render_template("decode.html", form=form, error="RGB or RGBA color channel only.")
+    result = decode(image)
+    return render_template("decode.html", form=form, result=result)
 
 
 def verify_png(file):
@@ -110,4 +113,26 @@ def merge_lsb(color, msg_bit):
 
 
 def decode(image):
-    pass
+    pixel_list: list = list(image.getdata())
+    bin_msg_with_delimiter: str = ""
+    for pixel in pixel_list:
+        for color in pixel:
+            if int(color) % 2 == 1:
+                bin_msg_with_delimiter += "1"
+            else:
+                bin_msg_with_delimiter += "0"
+    result = bin_to_ascii_str(bin_msg_with_delimiter)
+    return result
+
+
+def bin_to_ascii_str(bin_msg_with_delimiter):
+    bin_index: int = 0
+    result_with_delimiter: str = ""
+    while (bin_index + 8) < len(bin_msg_with_delimiter):
+        char_ord = int(bin_msg_with_delimiter[bin_index:(bin_index + 8)], 2)
+        result_with_delimiter += chr(char_ord)
+        bin_index += 8
+    delimiter_index = result_with_delimiter.find("#end#")
+    if delimiter_index == -1:
+        return "This is not an encoded image."
+    return result_with_delimiter[:delimiter_index]
