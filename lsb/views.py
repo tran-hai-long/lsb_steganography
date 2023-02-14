@@ -26,16 +26,17 @@ def encode_page():
     if not verify_png(form.image.data):
         return render_template("encode.html", form=form, error="PNG images only.")
     # Delimiter is used to signal the end of message
-    msg_with_delimiter: str = form.message.data + "#end#"
+    msg_with_delimiter: str = form.message.data
     bin_msg_with_delimiter: str = ascii_str_to_bin(msg_with_delimiter)
+    consumed_bits: int = int(form.consumed_bits.data)
     image: Image = Image.open(form.image.data)
     channel: int = verify_channel(image)
     if not channel:
         return render_template("encode.html", form=form, error="RGB or RGBA color channel only.")
-    if not check_if_msg_fit_in_img(bin_msg_with_delimiter, image, channel):
+    if not check_if_msg_fit_in_img(bin_msg_with_delimiter, image, channel, consumed_bits):
         return render_template("encode.html", form=form, error="The message does not fit in the image.")
     # Pillow Image objects can not be displayed in HTML, thus it is necessary to convert it to base64
-    result_base64 = encode(bin_msg_with_delimiter, image)
+    result_base64 = encode(bin_msg_with_delimiter, image, consumed_bits)
     return render_template("encode.html", form=form, result=result_base64)
 
 
@@ -81,12 +82,12 @@ def verify_channel(image):
             return 0
 
 
-def check_if_msg_fit_in_img(bin_msg, image, channel):
-    max_size: float = image.width * image.height * channel
+def check_if_msg_fit_in_img(bin_msg, image, channel, consumed_bits):
+    max_size: float = image.width * image.height * channel * consumed_bits
     return len(bin_msg) < max_size
 
 
-def encode(bin_msg, image):
+def encode(bin_msg, image, consumed_bits):
     pixel_list: list = list(image.getdata())
     bin_msg_index: int = 0
     pixel_count: int = 0
@@ -95,12 +96,14 @@ def encode(bin_msg, image):
         color_channel: int = 0
         for color in pixel:
             if bin_msg_index < len(bin_msg):
-                pixel[color_channel] = merge_lsb(color, bin_msg[bin_msg_index])
-                bin_msg_index += 1
-                color_channel += 1
+                for bit_count in range(consumed_bits - 1, -1, -1):
+                    pixel[color_channel] = merge_lsb(pixel[color_channel], bin_msg[bin_msg_index], bit_count)
+                    bin_msg_index += 1
+            color_channel += 1
         pixel: tuple = tuple(pixel)
         pixel_list[pixel_count] = pixel
         pixel_count += 1
+    print(pixel_list)
     result_image = Image.new(mode=image.mode, size=(image.width, image.height))
     result_image.putdata(pixel_list)
     # Keep the image in memory for now, may store it in disk in the future
@@ -110,12 +113,12 @@ def encode(bin_msg, image):
     return result_base64
 
 
-# Change the last bit of color to the same as msg_bit
-def merge_lsb(color, msg_bit):
-    if msg_bit == "1":
-        return color | 1
-    else:
-        return color & ~1
+# Convert the color to a binary string, then to a list of binary numbers.
+# Replace bit at the desired position, then convert it back to int.
+def merge_lsb(color, msg_bit, bit_position):
+    binary_color: list = list(format(color, "08b"))
+    binary_color[-1 - bit_position] = msg_bit
+    return int("".join(binary_color), 2)
 
 
 def decode(image):
