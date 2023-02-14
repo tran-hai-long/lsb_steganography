@@ -26,7 +26,7 @@ def encode_page():
     if not verify_png(form.image.data):
         return render_template("encode.html", form=form, error="PNG images only.")
     # Delimiter is used to signal the end of message
-    msg_with_delimiter: str = form.message.data
+    msg_with_delimiter: str = form.message.data + "#end#"
     bin_msg_with_delimiter: str = ascii_str_to_bin(msg_with_delimiter)
     consumed_bits: int = int(form.consumed_bits.data)
     image: Image = Image.open(form.image.data)
