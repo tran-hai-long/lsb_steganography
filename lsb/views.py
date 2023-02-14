@@ -47,11 +47,12 @@ def decode_page():
         return render_template("decode.html", form=form)
     if not verify_png(form.image.data):
         return render_template("decode.html", form=form, error="PNG images only.")
+    consumed_bits = int(form.consumed_bits.data)
     image: Image = Image.open(form.image.data)
     channel: int = verify_channel(image)
     if not channel:
         return render_template("decode.html", form=form, error="RGB or RGBA color channel only.")
-    result = decode(image)
+    result = decode(image, consumed_bits)
     return render_template("decode.html", form=form, result=result)
 
 
@@ -121,15 +122,13 @@ def merge_lsb(color, msg_bit, bit_position):
     return int("".join(binary_color), 2)
 
 
-def decode(image):
+def decode(image, consumed_bits):
     pixel_list: list = list(image.getdata())
     bin_msg_with_delimiter: str = ""
     for pixel in pixel_list:
         for color in pixel:
-            if int(color) % 2 == 1:
-                bin_msg_with_delimiter += "1"
-            else:
-                bin_msg_with_delimiter += "0"
+            binary_color: str = format(color, "08b")
+            bin_msg_with_delimiter += binary_color[-consumed_bits:]
     result = bin_to_ascii_str(bin_msg_with_delimiter)
     return result
 
@@ -145,5 +144,5 @@ def bin_to_ascii_str(bin_msg_with_delimiter):
         bin_index += 8
     delimiter_index = result_with_delimiter.find("#end#")
     if delimiter_index == -1:
-        return "This is not an encoded image."
+        return "This is not an encoded image, or you picked the wrong number of bit-per-channel."
     return result_with_delimiter[:delimiter_index]
