@@ -19,7 +19,7 @@
         {% if error %}
             <p>{{ error }}</p>
         {% endif %}
-        <button>Submit</button>
+        {{ form.submit }}
     </form>
     {#    Parse result image from base64 #}
     {% if result %}
