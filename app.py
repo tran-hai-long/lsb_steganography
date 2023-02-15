@@ -8,7 +8,7 @@ from lsb import views
 def create_app():
     # create and configure the app
     app = Flask(__name__)
-    app.config.from_object("config.DevConfig")
+    app.config.from_object("config.ProdConfig")
     csp = {
         "default-src": "\'self\'",
         "img-src": ["\'self\'", "data:"]
