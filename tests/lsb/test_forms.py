@@ -26,15 +26,42 @@ class EncodeFormTest(TestCase):
             form = EncodeForm()
             self.assertEqual(form.message.label.text, "Message")
 
+    def test_message_validator(self):
+        with self.test_app_context and self.test_request_context:
+            form = EncodeForm()
+            form.message.data = ""
+            self.assertFalse(form.message.validate(EncodeForm))
+            form.message.data = None
+            self.assertFalse(form.message.validate(EncodeForm))
+
     def test_image_label(self):
         with self.test_app_context and self.test_request_context:
             form = EncodeForm()
             self.assertEqual(form.image.label.text, "Image")
 
+    def test_image_validator(self):
+        with self.test_app_context and self.test_request_context:
+            form = EncodeForm()
+            form.image.data = None
+            self.assertFalse(form.image.validate(EncodeForm))
+
     def test_consumed_bits_label(self):
         with self.test_app_context and self.test_request_context:
             form = EncodeForm()
             self.assertEqual(form.consumed_bits.label.text, "How many bits per color channel to be used for encoding?")
+
+    def test_consumed_bits_choices(self):
+        with self.test_app_context and self.test_request_context:
+            form = EncodeForm()
+            self.assertEqual(form.consumed_bits.choices, [("1", "1bpc"), ("2", "2bpc"), ("4", "4bpc")])
+
+    def test_consumed_bits_validator(self):
+        with self.test_app_context and self.test_request_context:
+            form = EncodeForm()
+            form.consumed_bits.data = "3"
+            self.assertFalse(form.consumed_bits.validate(EncodeForm))
+            form.consumed_bits.data = "0"
+            self.assertFalse(form.consumed_bits.validate(EncodeForm))
 
     def test_submit_label(self):
         with self.test_app_context and self.test_request_context:
