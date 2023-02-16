@@ -26,7 +26,7 @@ def create_app():
     @app.before_request
     def verify_host():
         print(request.host)
-        if request.host not in config.DevConfig.ALLOWED_HOSTS:
+        if request.host not in config.ProdConfig.ALLOWED_HOSTS:
             return "Unable to process hostname", 421
 
     return app
