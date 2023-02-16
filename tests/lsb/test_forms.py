@@ -99,8 +99,9 @@ class DecodeFormTest(TestCase):
     def test_consumed_bits_label(self):
         with self.test_app_context and self.test_request_context:
             form = DecodeForm()
-            self.assertEqual(form.consumed_bits.label.text,
-                             "How many bits per color channel were used during the encoding process?")
+            self.assertEqual(
+                form.consumed_bits.label.text, "How many bits per color channel were used during the encoding process?"
+            )
 
     def test_consumed_bits_choices(self):
         with self.test_app_context and self.test_request_context:
@@ -121,5 +122,5 @@ class DecodeFormTest(TestCase):
             self.assertEqual(form.submit.label.text, "Submit")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
