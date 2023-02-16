@@ -1,7 +1,8 @@
-from flask import Flask, redirect
+from flask import Flask, redirect, request
 from flask_talisman import Talisman
 from flask_wtf import CSRFProtect
 
+import config
 from lsb import views
 
 
@@ -21,5 +22,11 @@ def create_app():
     @app.route("/")
     def index_redirect():
         return redirect("/lsb/")
+
+    @app.before_request
+    def verify_host():
+        print(request.host)
+        if request.host not in config.DevConfig.ALLOWED_HOSTS:
+            return "Unable to process hostname", 421
 
     return app
