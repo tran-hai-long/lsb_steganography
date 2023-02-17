@@ -104,7 +104,6 @@ def encode(bin_msg, image, consumed_bits):
         pixel: tuple = tuple(pixel)
         pixel_list[pixel_count] = pixel
         pixel_count += 1
-    print(pixel_list)
     result_image = Image.new(mode=image.mode, size=(image.width, image.height))
     result_image.putdata(pixel_list)
     # Keep the image in memory for now, may store it in disk in the future
