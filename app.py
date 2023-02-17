@@ -10,10 +10,7 @@ def create_app():
     # create and configure the app
     app = Flask(__name__)
     app.config.from_object("config.ProdConfig")
-    csp = {
-        "default-src": "\'self\'",
-        "img-src": ["\'self\'", "data:"]
-    }
+    csp = {"default-src": "'self'", "img-src": ["'self'", "data:"]}
     Talisman(app, content_security_policy=csp)
     csrf = CSRFProtect()
     csrf.init_app(app)
@@ -25,7 +22,6 @@ def create_app():
 
     @app.before_request
     def verify_host():
-        print(request.host)
         if request.host not in config.ProdConfig.ALLOWED_HOSTS:
             return "Unable to process hostname", 421
 

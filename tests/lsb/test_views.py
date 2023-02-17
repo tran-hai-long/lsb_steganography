@@ -50,5 +50,5 @@ class DecodeViewTest(TestCase):
         assert "<title>Decode</title>" in response.text
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

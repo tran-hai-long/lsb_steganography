@@ -104,7 +104,6 @@ def encode(bin_msg, image, consumed_bits):
         pixel: tuple = tuple(pixel)
         pixel_list[pixel_count] = pixel
         pixel_count += 1
-    print(pixel_list)
     result_image = Image.new(mode=image.mode, size=(image.width, image.height))
     result_image.putdata(pixel_list)
     # Keep the image in memory for now, may store it in disk in the future
@@ -139,7 +138,7 @@ def bin_to_ascii_str(bin_msg_with_delimiter):
     # Get every 8 character in bin_msg to form a binary number, convert it to Unicode code point number,
     # then convert it to ASCII char
     while (bin_index + 8) < len(bin_msg_with_delimiter):
-        char_ord = int(bin_msg_with_delimiter[bin_index:(bin_index + 8)], 2)
+        char_ord = int(bin_msg_with_delimiter[bin_index : (bin_index + 8)], 2)
         result_with_delimiter += chr(char_ord)
         bin_index += 8
     delimiter_index = result_with_delimiter.find("#end#")

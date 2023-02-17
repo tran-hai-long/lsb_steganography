@@ -2,6 +2,7 @@ import os
 
 
 class DevConfig:
+    DEBUG = True
     SECRET_KEY = "dev"
     ALLOWED_HOSTS = ["127.0.0.1:5000"]
 
