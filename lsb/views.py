@@ -8,8 +8,9 @@ from lsb.helpers import verify_png, verify_ascii, ascii_str_to_bin, verify_chann
 
 bp_lsb = Blueprint("lsb", __name__, url_prefix="/lsb", template_folder="templates")
 
-DELIMITER = "#end#"
-BIN_DELIMITER = ascii_str_to_bin(DELIMITER)
+DELIMITER: str = "#end#"
+BIN_DELIMITER: str = ascii_str_to_bin(DELIMITER)
+BIN_DELIMITER_LENGTH: int = len(BIN_DELIMITER)
 
 
 @bp_lsb.route("/")

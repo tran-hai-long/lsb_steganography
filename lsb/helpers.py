@@ -4,7 +4,7 @@ from io import BytesIO
 from PIL import Image
 from filetype import filetype
 
-from lsb.views import DELIMITER
+from lsb.views import DELIMITER, BIN_DELIMITER, BIN_DELIMITER_LENGTH
 
 
 def verify_png(file):
@@ -52,13 +52,11 @@ def bin_to_ascii_str(bin_msg_with_delimiter):
     result_with_delimiter: str = ""
     # Get every 8 character in bin_msg to form a binary number, convert it to Unicode code point number,
     # then convert it to ASCII char
-    while (bin_index + 8) < len(bin_msg_with_delimiter):
+    while (bin_index + 8) <= len(bin_msg_with_delimiter):
         char_ord = int(bin_msg_with_delimiter[bin_index: (bin_index + 8)], 2)
         result_with_delimiter += chr(char_ord)
         bin_index += 8
     delimiter_index = result_with_delimiter.find(DELIMITER)
-    if delimiter_index == -1:
-        return "Either this is not an encoded image, or you picked the wrong number of bit-per-channel."
     return result_with_delimiter[:delimiter_index]
 
 
@@ -94,5 +92,9 @@ def decode(image, consumed_bits):
         for color in pixel:
             binary_color: str = format(color, "08b")
             bin_msg_with_delimiter += binary_color[-consumed_bits:]
+        if bin_msg_with_delimiter[-BIN_DELIMITER_LENGTH:] == BIN_DELIMITER:
+            break
+    if bin_msg_with_delimiter[-BIN_DELIMITER_LENGTH:] != BIN_DELIMITER:
+        return "Either this is not an encoded image, or you picked the wrong number of bit-per-channel."
     result = bin_to_ascii_str(bin_msg_with_delimiter)
     return result
