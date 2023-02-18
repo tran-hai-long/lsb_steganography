@@ -1,11 +1,5 @@
 {% extends "base.html" %}
 {% block title %}<title>Decode</title>{% endblock %}
-{% block header %}
-    <header>
-        <h1>LSB Steganography</h1>
-        <a href="{{ url_for("lsb.encode_page") }}">Encode</a>
-    </header>
-{% endblock %}
 {% block main %}
     <h1>Decode</h1>
     <form method="POST" enctype="multipart/form-data" action="{{ url_for("lsb.decode_page") }}">

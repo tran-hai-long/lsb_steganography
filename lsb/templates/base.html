@@ -7,7 +7,9 @@
     </head>
     <body>
         {% block header %}
-            <header><h1>LSB Steganography</h1></header>
+            <header>
+                <a href="{{ url_for("lsb.index") }}"><h1>LSB Steganography</h1></a>
+            </header>
         {% endblock %}
         {% block main %}
         {% endblock %}
