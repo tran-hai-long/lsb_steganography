@@ -4,7 +4,9 @@ from io import BytesIO
 from PIL import Image
 from filetype import filetype
 
-from lsb.views import DELIMITER, BIN_DELIMITER, BIN_DELIMITER_LENGTH
+from lsb.bin_ascii import bin_to_ascii_str
+from lsb.views import DELIMITER_LENGTH, BIN_DELIMITER, BIN_DELIMITER_LENGTH, STARTER_LENGTH, BIN_STARTER, \
+    BIN_STARTER_LENGTH
 
 
 def verify_png(file):
@@ -33,31 +35,12 @@ def check_if_msg_fit_in_img(bin_msg, image, channel, consumed_bits):
     return len(bin_msg) < max_size
 
 
-# For each ASCII character, first convert it to Unicode code point form, then format it to binary form.
-# Pad 0 to the left if the binary string has less than 8 characters, for consistency.
-def ascii_str_to_bin(string):
-    return "".join([format(ord(char), "08b") for char in string])
-
-
 # Convert the color to a binary string, then to a list of binary numbers.
 # Replace bit at the desired position, then convert it back to int.
 def merge_lsb(color, msg_bit, bit_position):
     binary_color: list = list(format(color, "08b"))
     binary_color[-1 - bit_position] = msg_bit
     return int("".join(binary_color), 2)
-
-
-def bin_to_ascii_str(bin_msg_with_delimiter):
-    bin_index: int = 0
-    result_with_delimiter: str = ""
-    # Get every 8 character in bin_msg to form a binary number, convert it to Unicode code point number,
-    # then convert it to ASCII char
-    while (bin_index + 8) <= len(bin_msg_with_delimiter):
-        char_ord = int(bin_msg_with_delimiter[bin_index: (bin_index + 8)], 2)
-        result_with_delimiter += chr(char_ord)
-        bin_index += 8
-    delimiter_index = result_with_delimiter.find(DELIMITER)
-    return result_with_delimiter[:delimiter_index]
 
 
 def encode(bin_msg, image, consumed_bits):
@@ -87,14 +70,20 @@ def encode(bin_msg, image, consumed_bits):
 
 def decode(image, consumed_bits):
     pixel_list: list = list(image.getdata())
-    bin_msg_with_delimiter: str = ""
+    bin_msg_with_starter_and_delimiter: str = ""
+    no_starter = False
     for pixel in pixel_list:
         for color in pixel:
             binary_color: str = format(color, "08b")
-            bin_msg_with_delimiter += binary_color[-consumed_bits:]
-        if bin_msg_with_delimiter[-BIN_DELIMITER_LENGTH:] == BIN_DELIMITER:
+            bin_msg_with_starter_and_delimiter += binary_color[-consumed_bits:]
+        # quickly check the first few bytes for STARTER to see if it's an encoded image or not.
+        if len(bin_msg_with_starter_and_delimiter) == BIN_STARTER_LENGTH:
+            if bin_msg_with_starter_and_delimiter != BIN_STARTER:
+                no_starter = True
+                break
+        if bin_msg_with_starter_and_delimiter[-BIN_DELIMITER_LENGTH:] == BIN_DELIMITER:
             break
-    if bin_msg_with_delimiter[-BIN_DELIMITER_LENGTH:] != BIN_DELIMITER:
+    if (bin_msg_with_starter_and_delimiter[-BIN_DELIMITER_LENGTH:] != BIN_DELIMITER) or no_starter:
         return "Either this is not an encoded image, or you picked the wrong number of bit-per-channel."
-    result = bin_to_ascii_str(bin_msg_with_delimiter)
-    return result
+    result_with_starter_and_delimiter = bin_to_ascii_str(bin_msg_with_starter_and_delimiter)
+    return result_with_starter_and_delimiter[STARTER_LENGTH:-DELIMITER_LENGTH]

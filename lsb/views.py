@@ -2,15 +2,22 @@ from PIL import Image
 from flask import Blueprint, request
 from flask import render_template
 
+from lsb.bin_ascii import ascii_str_to_bin
 from lsb.forms import EncodeForm, DecodeForm
-from lsb.helpers import verify_png, verify_ascii, ascii_str_to_bin, verify_channel, check_if_msg_fit_in_img, encode, \
-    decode
 
 bp_lsb = Blueprint("lsb", __name__, url_prefix="/lsb", template_folder="templates")
 
+STARTER: str = "#start#"
+STARTER_LENGTH: int = len(STARTER)
+BIN_STARTER: str = ascii_str_to_bin(STARTER)
+BIN_STARTER_LENGTH: int = len(BIN_STARTER)
 DELIMITER: str = "#end#"
+DELIMITER_LENGTH: int = len(DELIMITER)
 BIN_DELIMITER: str = ascii_str_to_bin(DELIMITER)
 BIN_DELIMITER_LENGTH: int = len(BIN_DELIMITER)
+
+# move this import down to avoid circular import
+from lsb.helpers import verify_png, verify_ascii, verify_channel, check_if_msg_fit_in_img, encode, decode
 
 
 @bp_lsb.route("/")
@@ -28,17 +35,17 @@ def encode_page():
     if not verify_png(form.image.data):
         return render_template("encode.html", form=form, error="PNG images only.")
     # Delimiter is used to signal the end of message
-    msg_with_delimiter: str = form.message.data + DELIMITER
-    bin_msg_with_delimiter: str = ascii_str_to_bin(msg_with_delimiter)
+    msg_with_starter_and_delimiter: str = STARTER + form.message.data + DELIMITER
+    bin_msg_with_starter_and_delimiter: str = ascii_str_to_bin(msg_with_starter_and_delimiter)
     consumed_bits: int = int(form.consumed_bits.data)
     image: Image = Image.open(form.image.data)
     channel: int = verify_channel(image)
     if not channel:
         return render_template("encode.html", form=form, error="RGB or RGBA color channel only.")
-    if not check_if_msg_fit_in_img(bin_msg_with_delimiter, image, channel, consumed_bits):
+    if not check_if_msg_fit_in_img(bin_msg_with_starter_and_delimiter, image, channel, consumed_bits):
         return render_template("encode.html", form=form, error="The message does not fit in the image.")
     # Pillow Image objects can not be displayed in HTML, thus it is necessary to convert it to base64
-    result_base64 = encode(bin_msg_with_delimiter, image, consumed_bits)
+    result_base64 = encode(bin_msg_with_starter_and_delimiter, image, consumed_bits)
     return render_template("encode.html", form=form, result=result_base64)
 
 
