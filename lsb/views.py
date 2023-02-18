@@ -138,10 +138,30 @@ def bin_to_ascii_str(bin_msg_with_delimiter):
     # Get every 8 character in bin_msg to form a binary number, convert it to Unicode code point number,
     # then convert it to ASCII char
     while (bin_index + 8) < len(bin_msg_with_delimiter):
-        char_ord = int(bin_msg_with_delimiter[bin_index : (bin_index + 8)], 2)
+        char_ord = int(bin_msg_with_delimiter[bin_index: (bin_index + 8)], 2)
         result_with_delimiter += chr(char_ord)
         bin_index += 8
     delimiter_index = result_with_delimiter.find("#end#")
     if delimiter_index == -1:
         return "This is not an encoded image, or you picked the wrong number of bit-per-channel."
     return result_with_delimiter[:delimiter_index]
+
+
+@bp_lsb.route("/explain")
+def explain_page():
+    return render_template("explain.html")
+
+
+@bp_lsb.route("/tou")
+def terms_of_use_page():
+    return render_template("tou.html")
+
+
+@bp_lsb.route("/privacy")
+def privacy_policy_page():
+    return render_template("privacy.html")
+
+
+@bp_lsb.route("/about")
+def about_page():
+    return render_template("about.html")
