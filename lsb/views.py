@@ -8,6 +8,9 @@ from lsb.helpers import verify_png, verify_ascii, ascii_str_to_bin, verify_chann
 
 bp_lsb = Blueprint("lsb", __name__, url_prefix="/lsb", template_folder="templates")
 
+DELIMITER = "#end#"
+BIN_DELIMITER = ascii_str_to_bin(DELIMITER)
+
 
 @bp_lsb.route("/")
 def index():
@@ -24,7 +27,7 @@ def encode_page():
     if not verify_png(form.image.data):
         return render_template("encode.html", form=form, error="PNG images only.")
     # Delimiter is used to signal the end of message
-    msg_with_delimiter: str = form.message.data + "#end#"
+    msg_with_delimiter: str = form.message.data + DELIMITER
     bin_msg_with_delimiter: str = ascii_str_to_bin(msg_with_delimiter)
     consumed_bits: int = int(form.consumed_bits.data)
     image: Image = Image.open(form.image.data)

@@ -4,6 +4,8 @@ from io import BytesIO
 from PIL import Image
 from filetype import filetype
 
+from lsb.views import DELIMITER
+
 
 def verify_png(file):
     return filetype.guess(file).mime == "image/png"
@@ -54,7 +56,7 @@ def bin_to_ascii_str(bin_msg_with_delimiter):
         char_ord = int(bin_msg_with_delimiter[bin_index: (bin_index + 8)], 2)
         result_with_delimiter += chr(char_ord)
         bin_index += 8
-    delimiter_index = result_with_delimiter.find("#end#")
+    delimiter_index = result_with_delimiter.find(DELIMITER)
     if delimiter_index == -1:
         return "Either this is not an encoded image, or you picked the wrong number of bit-per-channel."
     return result_with_delimiter[:delimiter_index]
