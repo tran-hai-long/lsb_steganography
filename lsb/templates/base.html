@@ -7,16 +7,18 @@
     </head>
     <body>
         {% block header %}
-            <header><h1>LSB Steganography</h1></header>
+            <header>
+                <a href="{{ url_for('lsb.index') }}"><h1>LSB Steganography</h1></a>
+            </header>
         {% endblock %}
         {% block main %}
         {% endblock %}
         {% block footer %}
             <footer>
-                <a>How does it work?</a>
-                <a>About</a>
-                <a>Terms of Use</a>
-                <a>Privacy Policy</a>
+                <a href="{{ url_for('lsb.explain_page') }}">How does it work?</a>
+                <a href="{{ url_for('lsb.terms_of_use_page') }}">Terms of Use</a>
+                <a href="{{ url_for('lsb.privacy_policy_page') }}">Privacy Policy</a>
+                <a href="{{ url_for('lsb.about_page') }}">About</a>
             </footer>
         {% endblock %}
     </body>
