@@ -143,25 +143,25 @@ def bin_to_ascii_str(bin_msg_with_delimiter):
         bin_index += 8
     delimiter_index = result_with_delimiter.find("#end#")
     if delimiter_index == -1:
-        return "This is not an encoded image, or you picked the wrong number of bit-per-channel."
+        return "Either this is not an encoded image, or you picked the wrong number of bit-per-channel."
     return result_with_delimiter[:delimiter_index]
 
 
-@bp_lsb.route("/explain")
+@bp_lsb.route("/explain/")
 def explain_page():
     return render_template("explain.html")
 
 
-@bp_lsb.route("/tou")
+@bp_lsb.route("/tou/")
 def terms_of_use_page():
     return render_template("tou.html")
 
 
-@bp_lsb.route("/privacy")
+@bp_lsb.route("/privacy/")
 def privacy_policy_page():
     return render_template("privacy.html")
 
 
-@bp_lsb.route("/about")
+@bp_lsb.route("/about/")
 def about_page():
     return render_template("about.html")
