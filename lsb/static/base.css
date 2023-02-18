@@ -13,6 +13,7 @@ header {
     background: lightgray;
     padding-left: 2vw;
     padding-right: 2vw;
+    margin-bottom: 10vh;
 }
 
 .header-logo {
@@ -29,7 +30,7 @@ header {
 }
 
 .header-right-button:hover {
-    background-color: royalblue;
+    background-color: #197bd8;
 }
 
 main {
@@ -53,5 +54,5 @@ footer {
 }
 
 .footer-link:hover {
-    color: royalblue;
+    color: #197bd8;
 }
