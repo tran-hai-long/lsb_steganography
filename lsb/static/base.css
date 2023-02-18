@@ -1,0 +1,47 @@
+body {
+    font-family: sans-serif;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+header {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+    background: #f0f0f0;
+    padding-left: 2vw;
+    padding-right: 2vw;
+}
+
+.header-logo {
+    text-decoration: none;
+    color: black;
+}
+
+.header-right-button {
+    text-decoration: none;
+    color: white;
+    background-color: dodgerblue;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.header-right-button:hover {
+    background-color: royalblue;
+}
+
+main {
+    flex: 1
+}
+
+footer {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    background: #f0f0f0;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+}

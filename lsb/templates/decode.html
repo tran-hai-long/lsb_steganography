@@ -2,7 +2,7 @@
 {% block title %}<title>Decode</title>{% endblock %}
 {% block main %}
     <main>
-        <h1>Decode</h1>
+        <h2>Decode</h2>
         <form method="POST" enctype="multipart/form-data" action="{{ url_for('lsb.decode_page') }}">
             {{ form.csrf_token }}
             <div>{{ form.image.label }}: {{ form.image(accept="image/png, image/jpeg") }}</div>
