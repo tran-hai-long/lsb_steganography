@@ -5,7 +5,7 @@ from flask import render_template
 from lsb.bin_ascii import ascii_str_to_bin
 from lsb.forms import EncodeForm, DecodeForm
 
-bp_lsb = Blueprint("lsb", __name__, url_prefix="/lsb", template_folder="templates")
+bp_lsb = Blueprint("lsb", __name__, url_prefix="/lsb", template_folder="templates", static_folder="static")
 
 STARTER: str = "#start#"
 STARTER_LENGTH: int = len(STARTER)
