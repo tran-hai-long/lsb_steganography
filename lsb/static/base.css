@@ -10,7 +10,7 @@ header {
     flex-flow: row wrap;
     justify-content: space-between;
     align-items: center;
-    background: #f0f0f0;
+    background: lightgray;
     padding-left: 2vw;
     padding-right: 2vw;
 }
@@ -41,7 +41,17 @@ footer {
     flex-flow: row wrap;
     justify-content: space-around;
     align-items: center;
-    background: #f0f0f0;
+    background: lightgray;
     padding-top: 2vh;
     padding-bottom: 2vh;
+}
+
+.footer-link {
+    font-weight: bold;
+    text-decoration: none;
+    color: dodgerblue;
+}
+
+.footer-link:hover {
+    color: royalblue;
 }
