@@ -1,38 +1,40 @@
 {% extends "base.html" %}
 {% block title %}<title>Encode</title>{% endblock %}
 {% block main %}
-    <h1>Encode</h1>
-    <form method="POST" enctype="multipart/form-data" action="{{ url_for("lsb.encode_page") }}">
-        {{ form.csrf_token }}
-        <div>{{ form.message.label }}: {{ form.message }}</div>
-        {% if form.message.errors %}
-            <p>
-                {% for error in form.message.errors %}{{ error }}{% endfor %}
-            </p>
-        {% endif %}
-        <div>{{ form.image.label }}: {{ form.image(accept="image/png") }}</div>
-        {% if form.image.errors %}
-            <p>
-                {% for error in form.image.errors %}{{ error }}{% endfor %}
-            </p>
-        {% endif %}
-        <p>{{ form.consumed_bits.label }}</p>
-        {% for choice in form.consumed_bits %}
-            <tr>
-                <td>{{ choice }}</td>
-                <td>{{ choice.label }}</td>
-            </tr>
-        {% endfor %}
-        {% if form.consumed_bits.errors %}
-            <p>
-                {% for error in form.consumed_bits.errors %}{{ error }}{% endfor %}
-            </p>
-        {% endif %}
-        {{ form.submit }}
-        {% if error %}
-            <p>{{ error }}</p>
-        {% endif %}
-    </form>
-    {#    Parse result image from base64 #}
-    {% if result %}<img src="data:image/png;base64,{{ result | safe }}" alt="result image">{% endif %}
+    <main>
+        <h1>Encode</h1>
+        <form method="POST" enctype="multipart/form-data" action="{{ url_for("lsb.encode_page") }}">
+            {{ form.csrf_token }}
+            <div>{{ form.message.label }}: {{ form.message }}</div>
+            {% if form.message.errors %}
+                <p>
+                    {% for error in form.message.errors %}{{ error }}{% endfor %}
+                </p>
+            {% endif %}
+            <div>{{ form.image.label }}: {{ form.image(accept="image/png") }}</div>
+            {% if form.image.errors %}
+                <p>
+                    {% for error in form.image.errors %}{{ error }}{% endfor %}
+                </p>
+            {% endif %}
+            <p>{{ form.consumed_bits.label }}</p>
+            {% for choice in form.consumed_bits %}
+                <tr>
+                    <td>{{ choice }}</td>
+                    <td>{{ choice.label }}</td>
+                </tr>
+            {% endfor %}
+            {% if form.consumed_bits.errors %}
+                <p>
+                    {% for error in form.consumed_bits.errors %}{{ error }}{% endfor %}
+                </p>
+            {% endif %}
+            {{ form.submit }}
+            {% if error %}
+                <p>{{ error }}</p>
+            {% endif %}
+        </form>
+        {#    Parse result image from base64 #}
+        {% if result %}<img src="data:image/png;base64,{{ result | safe }}" alt="result image">{% endif %}
+    </main>
 {% endblock %}
