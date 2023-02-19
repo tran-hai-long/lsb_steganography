@@ -1,30 +1,43 @@
 {% extends "base.html" %}
 {% block title %}<title>Decode</title>{% endblock %}
+{% block  style %}
+    <link rel="stylesheet" href="{{ url_for('lsb.static', filename='encode-decode.css') }}">
+{% endblock %}
 {% block main %}
     <main>
         <h2>Decode</h2>
         <form method="POST" enctype="multipart/form-data" action="{{ url_for('lsb.decode_page') }}">
             {{ form.csrf_token }}
-            <div>{{ form.image.label }}: {{ form.image(accept="image/png, image/jpeg") }}</div>
-            {% if form.image.errors %}
-                <p>
-                    {% for error in form.image.errors %}{{ error }}{% endfor %}
-                </p>
-            {% endif %}
-            <p>{{ form.consumed_bits.label }}</p>
-            {% for choice in form.consumed_bits %}
-                <tr>
-                    <td>{{ choice }}</td>
-                    <td>{{ choice.label }}</td>
-                </tr>
-            {% endfor %}
-            {% if form.consumed_bits.errors %}
-                <p>
-                    {% for error in form.consumed_bits.errors %}{{ error }}{% endfor %}
-                </p>
-            {% endif %}
-            {{ form.submit }}
-            {% if error %}<p>{{ error }}</p>{% endif %}
+            <div id="form-image">
+                {{ form.image.label }}:<br>
+                {{ form.image(accept="image/png") }}
+                {% if form.image.errors %}
+                    <ul>
+                        {% for error in form.image.errors %}
+                            <li>{{ error }}</li>{% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <br>
+            <div id="form-consumed-bits">
+                {{ form.consumed_bits.label }}<br>
+                {% for choice in form.consumed_bits %}
+                    <tr>
+                        <td>{{ choice }}</td>
+                        <td>{{ choice.label }}</td>
+                    </tr>
+                {% endfor %}
+                {% if form.consumed_bits.errors %}
+                    <ul>
+                        {% for error in form.consumed_bits.errors %}
+                            <li>{{ error }}</li>{% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <br>
+            {{ form.submit(class_="btn") }}
+            <br>
+            {% if error %}{{ error }}{% endif %}
         </form>
         {% if result %}<p>{{ result }}</p>{% endif %}
     </main>
