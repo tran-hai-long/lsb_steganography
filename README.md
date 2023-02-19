@@ -19,7 +19,7 @@ served via Flask.
 ## TODO
 
 - [x] Allow users to choose the number of LSBs used for encoding and decoding.
-- [ ] Add some CSS to make the website look better.
+- [x] Add some CSS to make the website look better.
 - [ ] Support Unicode (UTF-8) characters.
 - [ ] (Nice to have) Implement Pseudo-random number steganography.
 
