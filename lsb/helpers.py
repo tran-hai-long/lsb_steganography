@@ -84,6 +84,6 @@ def decode(image, consumed_bits):
         if bin_msg_with_starter_and_delimiter[-BIN_DELIMITER_LENGTH:] == BIN_DELIMITER:
             break
     if (bin_msg_with_starter_and_delimiter[-BIN_DELIMITER_LENGTH:] != BIN_DELIMITER) or no_starter:
-        return "Either this is not an encoded image, or you picked the wrong number of bit-per-channel."
+        return "Error: Either this is not an encoded image, or you picked the wrong number of bit-per-channel."
     result_with_starter_and_delimiter = bin_to_ascii_str(bin_msg_with_starter_and_delimiter)
     return result_with_starter_and_delimiter[STARTER_LENGTH:-DELIMITER_LENGTH]
