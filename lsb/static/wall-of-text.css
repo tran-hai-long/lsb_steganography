@@ -1,4 +1,8 @@
-main {
+h2 {
+    text-align: center;
+}
+
+.wall-of-text {
     width: 75vw;
     display: block;
     margin-left: auto;
