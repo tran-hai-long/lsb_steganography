@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+{% block  style %}
+    <link rel="stylesheet" href="{{ url_for('lsb.static', filename='wall-of-text.css') }}">
+{% endblock %}
 {% block title %}<title>About</title>{% endblock %}
 {% block main %}
     <main>
@@ -12,5 +15,6 @@
                 <a href="https://flask-wtf.readthedocs.io/en/1.0.x/">Flask-WTF</a> for form processing
             </li>
         </ul>
+        <p>Source code for this website is available on <a href="https://github.com/tran-hai-long/lsb_steganography">my Github</a>.</p>
     </main>
 {% endblock %}
