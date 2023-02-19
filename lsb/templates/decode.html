@@ -14,7 +14,7 @@
                 {% if form.image.errors %}
                     <ul>
                         {% for error in form.image.errors %}
-                            <li>{{ error }}</li>{% endfor %}
+                            <li class="text-error">{{ error }}</li>{% endfor %}
                     </ul>
                 {% endif %}
             </div>
@@ -30,14 +30,14 @@
                 {% if form.consumed_bits.errors %}
                     <ul>
                         {% for error in form.consumed_bits.errors %}
-                            <li>{{ error }}</li>{% endfor %}
+                            <li class="text-error">{{ error }}</li>{% endfor %}
                     </ul>
                 {% endif %}
             </div>
             <br>
             {{ form.submit(class_="btn") }}
             <br>
-            {% if error %}{{ error }}{% endif %}
+            {% if error %}<p class="text-error">{{ error }}</p>{% endif %}
         </form>
         {% if result %}<p class="result-msg">{{ result }}</p>{% endif %}
     </main>

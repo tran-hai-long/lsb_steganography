@@ -18,7 +18,7 @@ textarea {
 }
 
 .result-img {
-    width: 50vw;
+    max-width: 50vw;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -29,4 +29,8 @@ textarea {
     display: block;
     margin-left: auto;
     margin-right: auto;
+}
+
+.text-error {
+    color: red;
 }
