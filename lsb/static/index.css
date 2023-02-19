@@ -7,18 +7,3 @@ h2 {
     flex-flow: row wrap;
     justify-content: center;
 }
-
-.question-button {
-    text-decoration: none;
-    color: dodgerblue;
-    border: 2px solid dodgerblue;
-    padding: 10px;
-    border-radius: 10px;
-    margin-left: 2vw;
-    margin-right: 2vw;
-}
-
-.question-button:hover {
-    background-color: dodgerblue;
-    color: white;
-}

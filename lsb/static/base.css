@@ -22,16 +22,32 @@ header {
     color: black;
 }
 
-.header-right-button {
+.btn {
     text-decoration: none;
     color: white;
     background-color: dodgerblue;
     padding: 10px;
     border-radius: 10px;
+    border: none;
 }
 
-.header-right-button:hover {
+.btn:hover {
     background-color: #197bd8;
+}
+
+.outline-btn {
+    text-decoration: none;
+    color: dodgerblue;
+    border: 2px solid dodgerblue;
+    padding: 10px;
+    border-radius: 10px;
+    margin-left: 2vw;
+    margin-right: 2vw;
+}
+
+.outline-btn:hover {
+    background-color: dodgerblue;
+    color: white;
 }
 
 main {

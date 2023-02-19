@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta content="width=device-width, initial-scale=1" name="viewport"/>
-        <link rel="stylesheet" href="{{ url_for('lsb.static', filename='base.css') }}">
-        {% block style %}{% endblock %}
-        {% block title %}<title>Title</title>{% endblock %}
-    </head>
-    <body>
-        {% block header %}
-            <header>
-                <a href="{{ url_for('lsb.index') }}" class="header-logo"><h1>LSB Steganography</h1></a>
-                <a href="{{ url_for('lsb.explain_page') }}" class="header-right-button">How does it work?</a>
-            </header>
-        {% endblock %}
-        {% block main %}
-        {% endblock %}
-        {% block footer %}
-            <footer>
-                <a href="{{ url_for('lsb.terms_of_use_page') }}" class="footer-link">Terms of Use</a>
-                <a href="{{ url_for('lsb.privacy_policy_page') }}" class="footer-link">Privacy Policy</a>
-                <a href="{{ url_for('lsb.about_page') }}" class="footer-link">About</a>
-            </footer>
-        {% endblock %}
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <link rel="stylesheet" href="{{ url_for('lsb.static', filename='base.css') }}">
+    {% block style %}{% endblock %}
+    {% block title %}<title>Title</title>{% endblock %}
+</head>
+<body>
+    {% block header %}
+        <header>
+            <a href="{{ url_for('lsb.index') }}" class="header-logo"><h1>LSB Steganography</h1></a>
+            <a href="{{ url_for('lsb.explain_page') }}" class="btn">How does it work?</a>
+        </header>
+    {% endblock %}
+    {% block main %}
+    {% endblock %}
+    {% block footer %}
+        <footer>
+            <a href="{{ url_for('lsb.terms_of_use_page') }}" class="footer-link">Terms of Use</a>
+            <a href="{{ url_for('lsb.privacy_policy_page') }}" class="footer-link">Privacy Policy</a>
+            <a href="{{ url_for('lsb.about_page') }}" class="footer-link">About</a>
+        </footer>
+    {% endblock %}
+</body>
 </html>

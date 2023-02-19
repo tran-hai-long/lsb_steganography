@@ -1,0 +1,17 @@
+h2 {
+    text-align: center;
+    padding-bottom: 2vh;
+}
+
+form {
+    width: 50vw;
+    min-width: 300px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+textarea {
+    border-radius: 4px;
+    resize: vertical;
+    min-width: 100%;
+}
