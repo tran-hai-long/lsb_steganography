@@ -74,3 +74,12 @@ footer {
 .footer-link:hover {
     color: #197bd8;
 }
+
+.alert-box {
+    color: #197bd8;
+    background-color: #daecff;
+    padding: 10px;
+    border-radius: 10px;
+    margin-left: 2vw;
+    margin-right: 2vw;
+}
