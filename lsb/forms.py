@@ -12,6 +12,7 @@ class EncodeForm(FlaskForm):
     consumed_bits = RadioField(
         "How many bits per color channel to be used for encoding?",
         choices=[("1", "1bpc"), ("2", "2bpc"), ("4", "4bpc")],
+        default="1",
         validators=[AnyOf(["1", "2", "4"], "Please choose one of the radio buttons.")],
     )
     submit = SubmitField("Submit")
@@ -24,6 +25,7 @@ class DecodeForm(FlaskForm):
     consumed_bits = RadioField(
         "How many bits per color channel were used during the encoding process?",
         choices=[("1", "1bpc"), ("2", "2bpc"), ("4", "4bpc")],
+        default="1",
         validators=[AnyOf(["1", "2", "4"], "Please choose one of the radio buttons.")],
     )
     submit = SubmitField("Submit")
