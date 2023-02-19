@@ -21,7 +21,8 @@ served via Flask.
 - [x] Allow users to choose the number of LSBs used for encoding and decoding.
 - [x] Add some CSS to make the website look better.
 - [ ] Support Unicode (UTF-8) characters.
-- [ ] (Nice to have) Implement Pseudo-random number steganography.
+- [ ] Implement Pseudo-random number steganography.
+- [ ] (Nice to have) AJAX for encode and decode page.
 
 ## License
 
