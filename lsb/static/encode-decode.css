@@ -6,12 +6,27 @@ h2 {
 form {
     width: 50vw;
     min-width: 300px;
-    margin-left:auto;
-    margin-right:auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2vh;
 }
 
 textarea {
     border-radius: 4px;
     resize: vertical;
     min-width: 100%;
+}
+
+.result-img {
+    width: 50vw;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.result-msg {
+    width: 50vw;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }

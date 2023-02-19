@@ -50,7 +50,10 @@
             <br>
             {% if error %}{{ error }}{% endif %}
         </form>
+        <br>
         {#    Parse result image from base64 #}
-        {% if result %}<img src="data:image/png;base64,{{ result | safe }}" alt="result image">{% endif %}
+        {% if result %}
+            <div><img src="data:image/png;base64,{{ result | safe }}" alt="result image" class="result-img"></div>
+        {% endif %}
     </main>
 {% endblock %}
