@@ -34,3 +34,7 @@ textarea {
 .text-error {
     color: red;
 }
+
+.submit-btn {
+    font-size: 16px;
+}
