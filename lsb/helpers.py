@@ -39,7 +39,7 @@ def check_if_msg_fit_in_img(bin_msg, image, channel, consumed_bits):
 # Replace bit at the desired position, then convert it back to int.
 def merge_lsb(color, msg_bit, bit_position):
     binary_color: list = list(format(color, "08b"))
-    binary_color[-1 - bit_position] = msg_bit
+    binary_color[-bit_position] = msg_bit
     return int("".join(binary_color), 2)
 
 
@@ -47,18 +47,25 @@ def encode(bin_msg, image, consumed_bits):
     pixel_list: list = list(image.getdata())
     bin_msg_index: int = 0
     pixel_count: int = 0
+    done: bool = False
     for pixel in pixel_list:
         pixel: list = list(pixel)
         color_channel: int = 0
         for color in pixel:
-            if bin_msg_index < len(bin_msg):
-                for bit_count in range(consumed_bits - 1, -1, -1):
+            for bit_count in range(consumed_bits, 0, -1):
+                if bin_msg_index < len(bin_msg):
                     pixel[color_channel] = merge_lsb(pixel[color_channel], bin_msg[bin_msg_index], bit_count)
                     bin_msg_index += 1
+                else:
+                    done = True
             color_channel += 1
+            if done:
+                break
         pixel: tuple = tuple(pixel)
         pixel_list[pixel_count] = pixel
         pixel_count += 1
+        if done:
+            break
     result_image = Image.new(mode=image.mode, size=(image.width, image.height))
     result_image.putdata(pixel_list)
     # Keep the image in memory for now, may store it in disk in the future
@@ -71,17 +78,23 @@ def encode(bin_msg, image, consumed_bits):
 def decode(image, consumed_bits):
     pixel_list: list = list(image.getdata())
     bin_msg_with_starter_and_delimiter: str = ""
-    no_starter = False
+    no_starter: bool = False
+    done: bool = False
     for pixel in pixel_list:
         for color in pixel:
             binary_color: str = format(color, "08b")
-            bin_msg_with_starter_and_delimiter += binary_color[-consumed_bits:]
-        # quickly check the first few bytes for STARTER to see if it's an encoded image or not.
-        if len(bin_msg_with_starter_and_delimiter) == BIN_STARTER_LENGTH:
-            if bin_msg_with_starter_and_delimiter != BIN_STARTER:
-                no_starter = True
+            for bit_count in range(consumed_bits, 0, -1):
+                bin_msg_with_starter_and_delimiter += binary_color[-bit_count]
+                # quickly check the first few bytes for STARTER to see if it's an encoded image or not.
+                if len(bin_msg_with_starter_and_delimiter) == BIN_STARTER_LENGTH:
+                    if bin_msg_with_starter_and_delimiter != BIN_STARTER:
+                        no_starter = True
+                        break
+                if bin_msg_with_starter_and_delimiter[-BIN_DELIMITER_LENGTH:] == BIN_DELIMITER:
+                    done = True
+            if done:
                 break
-        if bin_msg_with_starter_and_delimiter[-BIN_DELIMITER_LENGTH:] == BIN_DELIMITER:
+        if done:
             break
     if (bin_msg_with_starter_and_delimiter[-BIN_DELIMITER_LENGTH:] != BIN_DELIMITER) or no_starter:
         return "Error: Either this is not an encoded image, or you picked the wrong number of bit-per-channel."
