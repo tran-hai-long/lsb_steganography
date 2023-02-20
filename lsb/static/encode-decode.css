@@ -15,6 +15,7 @@ textarea {
     border-radius: 4px;
     resize: vertical;
     min-width: 100%;
+    min-height: 150px;
 }
 
 .result-img {
