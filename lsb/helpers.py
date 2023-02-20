@@ -92,9 +92,9 @@ def decode(image, consumed_bits):
                         break
                 if bin_msg_with_starter_and_delimiter[-BIN_DELIMITER_LENGTH:] == BIN_DELIMITER:
                     done = True
-            if done:
+            if done or no_starter:
                 break
-        if done:
+        if done or no_starter:
             break
     if (bin_msg_with_starter_and_delimiter[-BIN_DELIMITER_LENGTH:] != BIN_DELIMITER) or no_starter:
         return "Error: Either this is not an encoded image, or you picked the wrong number of bit-per-channel."
