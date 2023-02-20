@@ -47,6 +47,7 @@ def encode(bin_msg, image, consumed_bits):
     pixel_list: list = list(image.getdata())
     bin_msg_index: int = 0
     pixel_count: int = 0
+    done: bool = False
     for pixel in pixel_list:
         pixel: list = list(pixel)
         color_channel: int = 0
@@ -55,10 +56,16 @@ def encode(bin_msg, image, consumed_bits):
                 if bin_msg_index < len(bin_msg):
                     pixel[color_channel] = merge_lsb(pixel[color_channel], bin_msg[bin_msg_index], bit_count)
                     bin_msg_index += 1
+                else:
+                    done = True
             color_channel += 1
+            if done:
+                break
         pixel: tuple = tuple(pixel)
         pixel_list[pixel_count] = pixel
         pixel_count += 1
+        if done:
+            break
     result_image = Image.new(mode=image.mode, size=(image.width, image.height))
     result_image.putdata(pixel_list)
     # Keep the image in memory for now, may store it in disk in the future
