@@ -80,6 +80,11 @@ def encode(bin_msg, image, consumed_bits):
     return result_base64
 
 
+def extract_lsb(color, bit_position):
+    binary_color: str = format(color, "08b")
+    return binary_color[-bit_position]
+
+
 def decode(image, consumed_bits):
     pixel_list: list = list(image.getdata())
     bin_msg_with_starter_and_delimiter: str = ""
@@ -87,9 +92,8 @@ def decode(image, consumed_bits):
     done: bool = False
     for pixel in pixel_list:
         for color in pixel:
-            binary_color: str = format(color, "08b")
-            for bit_count in range(consumed_bits, 0, -1):
-                bin_msg_with_starter_and_delimiter += binary_color[-bit_count]
+            for bit_position in range(consumed_bits, 0, -1):
+                bin_msg_with_starter_and_delimiter += extract_lsb(color, bit_position)
                 # quickly check the first few bytes for STARTER to see if it's an encoded image or not.
                 if len(bin_msg_with_starter_and_delimiter) == BIN_STARTER_LENGTH:
                     if bin_msg_with_starter_and_delimiter != BIN_STARTER:
