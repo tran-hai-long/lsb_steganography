@@ -17,7 +17,8 @@ BIN_DELIMITER: str = ascii_str_to_bin(DELIMITER)
 BIN_DELIMITER_LENGTH: int = len(BIN_DELIMITER)
 
 # move this import down to avoid circular import
-from lsb.helpers import verify_png, verify_ascii, verify_channel, check_if_msg_fit_in_img, encode, decode
+from lsb.helpers import verify_png, verify_ascii, verify_channel, check_if_msg_fit_in_img, encode, decode, \
+    verify_png_jpeg
 
 
 @bp_lsb.route("/")
@@ -32,7 +33,7 @@ def encode_page():
         return render_template("encode.html", form=form)
     if not verify_ascii(form.message.data):
         return render_template("encode.html", form=form, error="ASCII characters only.")
-    if not verify_png(form.image.data):
+    if not verify_png_jpeg(form.image.data):
         return render_template("encode.html", form=form, error="PNG images only.")
     # Delimiter is used to signal the end of message
     msg_with_starter_and_delimiter: str = STARTER + form.message.data + DELIMITER

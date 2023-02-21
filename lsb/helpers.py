@@ -13,6 +13,11 @@ def verify_png(file):
     return filetype.guess(file).mime == "image/png"
 
 
+def verify_png_jpeg(file):
+    img_type = filetype.guess(file).mime
+    return (img_type == "image/png") or (img_type == "image/jpeg")
+
+
 def verify_ascii(message):
     for char in message:
         if ord(char) >= 128:
