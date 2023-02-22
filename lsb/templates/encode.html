@@ -6,7 +6,7 @@
 {% block main %}
     <main>
         {% if not result %}
-            <p class="alert-box">Currently the site only supports ASCII messages and RGB/RGBA PNG images. Max image size 5MB.</p>
+            <p class="alert-box">Currently the site only supports ASCII messages and RGB/RGBA PNG/JPEG images. Max image size 5MB.</p>
         {% endif %}
         <h2>Encode</h2>
         <form method="POST" enctype="multipart/form-data" action="{{ url_for('lsb.encode_page') }}">
