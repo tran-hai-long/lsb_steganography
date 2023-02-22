@@ -24,7 +24,7 @@
             <br>
             <div id="form-image">
                 {{ form.image.label }}:<br>
-                {{ form.image(accept="image/png") }}
+                {{ form.image(accept="image/png, image/jpeg") }}
                 {% if form.image.errors %}
                     <ul>
                         {% for error in form.image.errors %}
