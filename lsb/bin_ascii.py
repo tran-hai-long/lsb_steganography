@@ -4,11 +4,11 @@ def ascii_str_to_bin(string):
     return "".join([format(ord(char), "08b") for char in string])
 
 
+# Get every 8 character in bin_msg to form a binary number, convert it to Unicode code point number,
+# then convert it to an ASCII char
 def bin_to_ascii_str(bin_msg):
     bin_index: int = 0
     result: str = ""
-    # Get every 8 character in bin_msg to form a binary number, convert it to Unicode code point number,
-    # then convert it to ASCII char
     while (bin_index + 8) <= len(bin_msg):
         char_ord = int(bin_msg[bin_index: (bin_index + 8)], 2)
         result += chr(char_ord)

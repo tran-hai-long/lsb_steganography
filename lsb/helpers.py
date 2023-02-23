@@ -36,7 +36,7 @@ def verify_channel(image):
 
 
 def check_if_msg_fit_in_img(bin_msg, image, channel, consumed_bits):
-    max_size: float = image.width * image.height * channel * consumed_bits
+    max_size: int = image.width * image.height * channel * consumed_bits
     return len(bin_msg) < max_size
 
 
@@ -54,6 +54,7 @@ def encode(bin_msg, image, consumed_bits):
     pixel_count: int = 0
     done: bool = False
     for pixel in pixel_list:
+        # getdata() returns a list of tuples. Since tuples are immutable, it is necessary to convert them to list.
         pixel: list = list(pixel)
         color_channel: int = 0
         for color in pixel:
@@ -71,7 +72,7 @@ def encode(bin_msg, image, consumed_bits):
         pixel_count += 1
         if done:
             break
-    result_image = Image.new(mode=image.mode, size=(image.width, image.height))
+    result_image: Image = Image.new(mode=image.mode, size=(image.width, image.height))
     result_image.putdata(pixel_list)
     # Keep the image in memory for now, may store it in disk in the future
     buffered = BytesIO()
@@ -99,12 +100,14 @@ def decode(image, consumed_bits):
                     if bin_msg_with_starter_and_delimiter != BIN_STARTER:
                         no_starter = True
                         break
+                # Stop the loop when delimiter is found
                 if bin_msg_with_starter_and_delimiter[-BIN_DELIMITER_LENGTH:] == BIN_DELIMITER:
                     done = True
             if done or no_starter:
                 break
         if done or no_starter:
             break
+    # Return an error if starter is not found, or starter is found but delimiter is not found
     if (bin_msg_with_starter_and_delimiter[-BIN_DELIMITER_LENGTH:] != BIN_DELIMITER) or no_starter:
         return "Error: Either this is not an encoded image, or you picked the wrong number of bit-per-channel."
     result_with_starter_and_delimiter = bin_to_ascii_str(bin_msg_with_starter_and_delimiter)

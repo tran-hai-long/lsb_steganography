@@ -46,7 +46,7 @@ def encode_page():
     if not check_if_msg_fit_in_img(bin_msg_with_starter_and_delimiter, image, channel, consumed_bits):
         return render_template("encode.html", form=form, error="The message does not fit in the image.")
     # Pillow Image objects can not be displayed in HTML, thus it is necessary to convert it to base64
-    result_base64 = encode(bin_msg_with_starter_and_delimiter, image, consumed_bits)
+    result_base64: str = encode(bin_msg_with_starter_and_delimiter, image, consumed_bits)
     return render_template("encode.html", form=form, result=result_base64)
 
 
@@ -57,12 +57,12 @@ def decode_page():
         return render_template("decode.html", form=form)
     if not verify_png(form.image.data):
         return render_template("decode.html", form=form, error="PNG images only.")
-    consumed_bits = int(form.consumed_bits.data)
+    consumed_bits: int = int(form.consumed_bits.data)
     image: Image = Image.open(form.image.data)
     channel: int = verify_channel(image)
     if not channel:
         return render_template("decode.html", form=form, error="RGB or RGBA color channel only.")
-    result = decode(image, consumed_bits)
+    result: str = decode(image, consumed_bits)
     return render_template("decode.html", form=form, result=result)
 
 
