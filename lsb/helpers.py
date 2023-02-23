@@ -18,14 +18,14 @@ def verify_png_jpeg(file):
     return (img_type == "image/png") or (img_type == "image/jpeg")
 
 
-def verify_ascii(message):
+def verify_ascii(message: str):
     for char in message:
         if ord(char) >= 128:
             return False
     return True
 
 
-def verify_channel(image):
+def verify_channel(image: Image):
     match image.mode:
         case "RGB":
             return 3
@@ -35,20 +35,20 @@ def verify_channel(image):
             return 0
 
 
-def check_if_msg_fit_in_img(bin_msg, image, channel, consumed_bits):
+def check_if_msg_fit_in_img(bin_msg: str, image: Image, channel: int, consumed_bits: int):
     max_size: int = image.width * image.height * channel * consumed_bits
     return len(bin_msg) < max_size
 
 
 # Convert the color to a binary string, then to a list of binary numbers.
 # Replace bit at the desired position, then convert it back to int.
-def merge_lsb(color, msg_bit, bit_position):
+def merge_lsb(color: int, msg_bit: str, bit_position: int):
     binary_color: list = list(format(color, "08b"))
     binary_color[-bit_position] = msg_bit
     return int("".join(binary_color), 2)
 
 
-def encode(bin_msg, image, consumed_bits):
+def encode(bin_msg: str, image: Image, consumed_bits: int):
     pixel_list: list = list(image.getdata())
     bin_msg_index: int = 0
     pixel_count: int = 0
@@ -77,12 +77,12 @@ def encode(bin_msg, image, consumed_bits):
     return result
 
 
-def extract_lsb(color, bit_position):
+def extract_lsb(color: int, bit_position: int):
     binary_color: str = format(color, "08b")
     return binary_color[-bit_position]
 
 
-def decode(image, consumed_bits):
+def decode(image: Image, consumed_bits: int):
     pixel_list: list = list(image.getdata())
     bin_msg_with_starter_and_delimiter: str = ""
     no_starter: bool = False
@@ -110,7 +110,7 @@ def decode(image, consumed_bits):
     return result_with_starter_and_delimiter[STARTER_LENGTH:-DELIMITER_LENGTH]
 
 
-def buffer_and_convert_b64(image):
+def buffer_and_convert_b64(image: Image):
     image_buffer: BytesIO = BytesIO()
     image.save(image_buffer, format="PNG")
     image_base64: str = base64.b64encode(image_buffer.getvalue()).decode("utf-8")
