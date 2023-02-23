@@ -10,7 +10,7 @@
 <body>
     {% block header %}
         <header>
-            <a href="{{ url_for('lsb.index') }}" class="header-logo"><h1>LSB Steganography</h1></a>
+            <a href="{{ url_for('lsb.index') }}" id="header-logo-link"><h1 id="header-logo">LSB Steganography</h1></a>
             <a href="{{ url_for('lsb.explain_page') }}" class="btn">How does it work?</a>
         </header>
     {% endblock %}
