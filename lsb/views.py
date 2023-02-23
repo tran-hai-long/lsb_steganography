@@ -18,7 +18,7 @@ BIN_DELIMITER_LENGTH: int = len(BIN_DELIMITER)
 
 # move this import down to avoid circular import
 from lsb.helpers import verify_png, verify_ascii, verify_channel, check_if_msg_fit_in_img, encode, decode, \
-    verify_png_jpeg
+    verify_png_jpeg, buffer_and_convert_b64
 
 
 @bp_lsb.route("/")
@@ -45,8 +45,9 @@ def encode_page():
         return render_template("encode.html", form=form, error="RGB or RGBA color channel only.")
     if not check_if_msg_fit_in_img(bin_msg_with_starter_and_delimiter, image, channel, consumed_bits):
         return render_template("encode.html", form=form, error="The message does not fit in the image.")
+    result: Image = encode(bin_msg_with_starter_and_delimiter, image, consumed_bits)
     # Pillow Image objects can not be displayed in HTML, thus it is necessary to convert it to base64
-    result_base64: str = encode(bin_msg_with_starter_and_delimiter, image, consumed_bits)
+    result_base64: str = buffer_and_convert_b64(result)
     return render_template("encode.html", form=form, result=result_base64)
 
 

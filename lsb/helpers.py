@@ -72,13 +72,9 @@ def encode(bin_msg, image, consumed_bits):
         pixel_count += 1
         if done:
             break
-    result_image: Image = Image.new(mode=image.mode, size=(image.width, image.height))
-    result_image.putdata(pixel_list)
-    # Keep the image in memory for now, may store it in disk in the future
-    buffered = BytesIO()
-    result_image.save(buffered, format="PNG")
-    result_base64 = base64.b64encode(buffered.getvalue()).decode("utf-8")
-    return result_base64
+    result: Image = Image.new(mode=image.mode, size=(image.width, image.height))
+    result.putdata(pixel_list)
+    return result
 
 
 def extract_lsb(color, bit_position):
@@ -112,3 +108,10 @@ def decode(image, consumed_bits):
         return "Error: Either this is not an encoded image, or you picked the wrong number of bit-per-channel."
     result_with_starter_and_delimiter = bin_to_ascii_str(bin_msg_with_starter_and_delimiter)
     return result_with_starter_and_delimiter[STARTER_LENGTH:-DELIMITER_LENGTH]
+
+
+def buffer_and_convert_b64(image):
+    image_buffer: BytesIO = BytesIO()
+    image.save(image_buffer, format="PNG")
+    image_base64: str = base64.b64encode(image_buffer.getvalue()).decode("utf-8")
+    return image_base64
