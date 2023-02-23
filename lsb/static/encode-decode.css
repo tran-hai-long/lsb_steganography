@@ -1,5 +1,5 @@
 form {
-    width: 50vw;
+    width: 75vw;
     min-width: 200px;
     margin-left: auto;
     margin-right: auto;
@@ -14,17 +14,15 @@ textarea {
 }
 
 .result-img {
-    max-width: 50vw;
+    max-width: 75vw;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
+    margin: auto;
 }
 
 .result-msg {
-    width: 50vw;
+    max-width: 75vw;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
+    margin: auto;
 }
 
 .text-error {
