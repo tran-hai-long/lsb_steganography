@@ -82,6 +82,7 @@ footer {
     background-color: #e8f2ff;
     padding: 10px;
     border-radius: 10px;
-    margin-left: 10vw;
-    margin-right: 10vw;
+    margin: auto;
+    width: fit-content;
+    text-align: center;
 }
