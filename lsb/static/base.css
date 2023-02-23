@@ -11,11 +11,11 @@ header {
     flex-flow: row wrap;
     justify-content: space-between;
     align-items: center;
-    background: lightgray;
+    background: #e8f2ff;
     padding-left: 2vw;
     padding-right: 2vw;
     margin-bottom: 10vh;
-    border-bottom: 2px solid dodgerblue;
+    border-bottom: 2px solid #0071af;
 }
 
 .header-logo {
@@ -26,20 +26,20 @@ header {
 .btn {
     text-decoration: none;
     color: white;
-    background-color: dodgerblue;
+    background-color: #0071af;
     padding: 10px;
     border-radius: 10px;
     border: none;
 }
 
 .btn:hover {
-    background-color: #197bd8;
+    background-color: #003b5e;
 }
 
 .outline-btn {
     text-decoration: none;
-    color: dodgerblue;
-    border: 2px solid dodgerblue;
+    color: #0071af;
+    border: 2px solid #0071af;
     padding: 10px;
     border-radius: 10px;
     margin-left: 2vw;
@@ -47,7 +47,7 @@ header {
 }
 
 .outline-btn:hover {
-    background-color: dodgerblue;
+    background-color: #0071af;
     color: white;
 }
 
@@ -60,26 +60,26 @@ footer {
     flex-flow: row wrap;
     justify-content: space-around;
     align-items: center;
-    background: lightgray;
+    background: #e8f2ff;
     padding-top: 2vh;
     padding-bottom: 2vh;
     margin-top: 2vh;
-    border-top: 2px solid dodgerblue;
+    border-top: 2px solid #0071af;
 }
 
 .footer-link {
     font-weight: bold;
     text-decoration: none;
-    color: dodgerblue;
+    color: #0071af;
 }
 
 .footer-link:hover {
-    color: #197bd8;
+    color: #003b5e;
 }
 
 .alert-box {
-    color: #197bd8;
-    background-color: #daecff;
+    color: #0071af;
+    background-color: #e8f2ff;
     padding: 10px;
     border-radius: 10px;
     margin-left: 10vw;
