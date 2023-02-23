@@ -1,11 +1,6 @@
-h2 {
-    text-align: center;
-    padding-bottom: 2vh;
-}
-
 form {
     width: 50vw;
-    min-width: 300px;
+    min-width: 200px;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 2vh;
@@ -34,8 +29,4 @@ textarea {
 
 .text-error {
     color: darkred;
-}
-
-.submit-btn {
-    font-size: 16px;
 }

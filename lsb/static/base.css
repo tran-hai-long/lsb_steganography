@@ -33,6 +33,7 @@ header {
     padding: 10px;
     border-radius: 10px;
     border: none;
+    font-size: 16px;
 }
 
 .btn:hover {
@@ -45,6 +46,9 @@ header {
     border: 2px solid #0071af;
     padding: 10px;
     border-radius: 10px;
+}
+
+.encode-decode-btn {
     margin: 2vh 2vw;
 }
 
@@ -87,5 +91,9 @@ footer {
     border-radius: 10px;
     margin: auto;
     width: fit-content;
+    text-align: center;
+}
+
+h2 {
     text-align: center;
 }
