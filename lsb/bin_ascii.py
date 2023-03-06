@@ -10,7 +10,7 @@ def bin_to_ascii_str(bin_msg: str):
     bin_index: int = 0
     result: str = ""
     while (bin_index + 8) <= len(bin_msg):
-        char_ord = int(bin_msg[bin_index: (bin_index + 8)], 2)
+        char_ord = int(bin_msg[bin_index : (bin_index + 8)], 2)
         result += chr(char_ord)
         bin_index += 8
     return result

@@ -48,12 +48,17 @@ class EncodeFormTest(TestCase):
     def test_consumed_bits_label(self):
         with self.test_app_context and self.test_request_context:
             form = EncodeForm()
-            self.assertEqual(form.consumed_bits.label.text, "How many bits per color channel to be used for encoding?")
+            self.assertEqual(
+                form.consumed_bits.label.text,
+                "How many bits per color channel to be used for encoding?",
+            )
 
     def test_consumed_bits_choices(self):
         with self.test_app_context and self.test_request_context:
             form = EncodeForm()
-            self.assertEqual(form.consumed_bits.choices, [("1", "1bpc"), ("2", "2bpc"), ("4", "4bpc")])
+            self.assertEqual(
+                form.consumed_bits.choices, [("1", "1bpc"), ("2", "2bpc"), ("4", "4bpc")]
+            )
 
     def test_consumed_bits_validator(self):
         with self.test_app_context and self.test_request_context:
@@ -100,13 +105,16 @@ class DecodeFormTest(TestCase):
         with self.test_app_context and self.test_request_context:
             form = DecodeForm()
             self.assertEqual(
-                form.consumed_bits.label.text, "How many bits per color channel were used during the encoding process?"
+                form.consumed_bits.label.text,
+                "How many bits per color channel were used during the encoding process?",
             )
 
     def test_consumed_bits_choices(self):
         with self.test_app_context and self.test_request_context:
             form = DecodeForm()
-            self.assertEqual(form.consumed_bits.choices, [("1", "1bpc"), ("2", "2bpc"), ("4", "4bpc")])
+            self.assertEqual(
+                form.consumed_bits.choices, [("1", "1bpc"), ("2", "2bpc"), ("4", "4bpc")]
+            )
 
     def test_consumed_bits_validator(self):
         with self.test_app_context and self.test_request_context:

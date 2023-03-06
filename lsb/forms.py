@@ -8,7 +8,10 @@ class EncodeForm(FlaskForm):
     message = TextAreaField("Message", validators=[DataRequired("Message required.")])
     image = FileField(
         "Image",
-        validators=[FileRequired("Image required."), FileAllowed(["png", "jpeg", "jpg"], "PNG or JPEG image required.")]
+        validators=[
+            FileRequired("Image required."),
+            FileAllowed(["png", "jpeg", "jpg"], "PNG or JPEG image required."),
+        ],
     )
     consumed_bits = RadioField(
         "How many bits per color channel to be used for encoding?",
@@ -21,7 +24,8 @@ class EncodeForm(FlaskForm):
 
 class DecodeForm(FlaskForm):
     image = FileField(
-        "Image", validators=[FileRequired("Image required."), FileAllowed(["png"], "PNG image required.")]
+        "Image",
+        validators=[FileRequired("Image required."), FileAllowed(["png"], "PNG image required.")],
     )
     consumed_bits = RadioField(
         "How many bits per color channel were used during the encoding process?",

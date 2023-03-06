@@ -5,8 +5,14 @@ from PIL import Image
 from filetype import filetype
 
 from lsb.bin_ascii import bin_to_ascii_str
-from lsb.views import DELIMITER_LENGTH, BIN_DELIMITER, BIN_DELIMITER_LENGTH, STARTER_LENGTH, BIN_STARTER, \
-    BIN_STARTER_LENGTH
+from lsb.views import (
+    DELIMITER_LENGTH,
+    BIN_DELIMITER,
+    BIN_DELIMITER_LENGTH,
+    STARTER_LENGTH,
+    BIN_STARTER,
+    BIN_STARTER_LENGTH,
+)
 
 
 def verify_png(file):
@@ -54,13 +60,16 @@ def encode(bin_msg: str, image: Image, consumed_bits: int):
     pixel_count: int = 0
     done: bool = False
     for pixel in pixel_list:
-        # getdata() returns a list of tuples. Since tuples are immutable, it is necessary to convert them to list.
+        # getdata() returns a list of tuples. Since tuples are immutable, it is necessary to
+        # convert them to list.
         pixel: list = list(pixel)
         color_channel: int = 0
         for color in pixel:
             for bit_count in range(consumed_bits, 0, -1):
                 if bin_msg_index < len(bin_msg):
-                    pixel[color_channel] = merge_lsb(pixel[color_channel], bin_msg[bin_msg_index], bit_count)
+                    pixel[color_channel] = merge_lsb(
+                        pixel[color_channel], bin_msg[bin_msg_index], bit_count
+                    )
                     bin_msg_index += 1
                 else:
                     done = True

@@ -5,7 +5,9 @@ from flask import render_template
 from lsb.bin_ascii import ascii_str_to_bin
 from lsb.forms import EncodeForm, DecodeForm
 
-bp_lsb = Blueprint("lsb", __name__, url_prefix="/lsb", template_folder="templates", static_folder="static")
+bp_lsb = Blueprint(
+    "lsb", __name__, url_prefix="/lsb", template_folder="templates", static_folder="static"
+)
 
 STARTER: str = "#start#"
 STARTER_LENGTH: int = len(STARTER)
@@ -17,8 +19,16 @@ BIN_DELIMITER: str = ascii_str_to_bin(DELIMITER)
 BIN_DELIMITER_LENGTH: int = len(BIN_DELIMITER)
 
 # move this import down to avoid circular import
-from lsb.helpers import verify_png, verify_ascii, verify_channel, check_if_msg_fit_in_img, encode, decode, \
-    verify_png_jpeg, buffer_and_convert_b64
+from lsb.helpers import (
+    verify_png,
+    verify_ascii,
+    verify_channel,
+    check_if_msg_fit_in_img,
+    encode,
+    decode,
+    verify_png_jpeg,
+    buffer_and_convert_b64,
+)
 
 
 @bp_lsb.route("/")
@@ -43,8 +53,12 @@ def encode_page():
     channel: int = verify_channel(image)
     if not channel:
         return render_template("encode.html", form=form, error="RGB or RGBA color channel only.")
-    if not check_if_msg_fit_in_img(bin_msg_with_starter_and_delimiter, image, channel, consumed_bits):
-        return render_template("encode.html", form=form, error="The message does not fit in the image.")
+    if not check_if_msg_fit_in_img(
+        bin_msg_with_starter_and_delimiter, image, channel, consumed_bits
+    ):
+        return render_template(
+            "encode.html", form=form, error="The message does not fit in the image."
+        )
     result: Image = encode(bin_msg_with_starter_and_delimiter, image, consumed_bits)
     # Pillow Image objects can not be displayed in HTML, thus it is necessary to convert it to base64
     result_base64: str = buffer_and_convert_b64(result)
