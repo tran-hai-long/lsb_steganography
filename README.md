@@ -1,7 +1,7 @@
 # LSB Steganography
 
-Hiding messages inside images using Least Significant Bit (LSB) steganography. Images are processed by Pillow and
-served via Flask.
+Hiding messages inside images using Least Significant Bit (LSB) steganography. Images are processed
+by Pillow and served via Flask.
 
 ## Setup
 
@@ -13,8 +13,8 @@ served via Flask.
 ## Features
 
 - Hide and reveal ASCII messages inside PNG images using LSB steganography.
-- Choose the number of bits per byte on the image to be used for the encoding process. More bits used means you can
-  cramp more data but will result in a drastically changed image.
+- Choose the number of bits per byte on the image to be used for the encoding process. More bits
+  used means you can cramp more data but will result in a drastically changed image.
 
 ## TODO
 
