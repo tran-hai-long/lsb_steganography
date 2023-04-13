@@ -82,23 +82,3 @@ def decode_page():
                                error="RGB or RGBA color channel only.")
     result: str = decode(image, seed)
     return render_template("prng-decode.html", form=form, result=result)
-
-
-@bp_prng.route("/explain/")
-def explain_page():
-    return render_template("explain.html")
-
-
-@bp_prng.route("/tou/")
-def terms_of_use_page():
-    return render_template("tou.html")
-
-
-@bp_prng.route("/privacy/")
-def privacy_policy_page():
-    return render_template("privacy.html")
-
-
-@bp_prng.route("/about/")
-def about_page():
-    return render_template("about.html")

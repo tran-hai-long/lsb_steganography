@@ -81,23 +81,3 @@ def decode_page():
                                error="RGB or RGBA color channel only.")
     result: str = decode(image, consumed_bits)
     return render_template("lsb-decode.html", form=form, result=result)
-
-
-@bp_lsb.route("/explain/")
-def explain_page():
-    return render_template("explain.html")
-
-
-@bp_lsb.route("/tou/")
-def terms_of_use_page():
-    return render_template("tou.html")
-
-
-@bp_lsb.route("/privacy/")
-def privacy_policy_page():
-    return render_template("privacy.html")
-
-
-@bp_lsb.route("/about/")
-def about_page():
-    return render_template("about.html")

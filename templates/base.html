@@ -13,17 +13,17 @@
             <a href="{{ url_for('lsb.index') }}" id="header-logo-link">
                 <h1 id="header-logo">LSB Steganography</h1>
             </a>
-            <a href="{{ url_for('lsb.explain_page') }}" class="btn">How does it work?</a>
+            <a href="{{ url_for('explain_page') }}" class="btn">How does it work?</a>
         </header>
     {% endblock %}
     {% block main %}
     {% endblock %}
     {% block footer %}
         <footer>
-            <a href="{{ url_for('lsb.terms_of_use_page') }}" class="footer-link">Terms of Use</a>
-            <a href="{{ url_for('lsb.privacy_policy_page') }}" class="footer-link">Privacy
+            <a href="{{ url_for('terms_of_use_page') }}" class="footer-link">Terms of Use</a>
+            <a href="{{ url_for('privacy_policy_page') }}" class="footer-link">Privacy
                 Policy</a>
-            <a href="{{ url_for('lsb.about_page') }}" class="footer-link">About</a>
+            <a href="{{ url_for('about_page') }}" class="footer-link">About</a>
         </footer>
     {% endblock %}
 </body>

@@ -1,4 +1,4 @@
-from flask import Flask, redirect, request
+from flask import Flask, redirect, request, render_template
 from flask_talisman import Talisman
 from flask_wtf import CSRFProtect
 
@@ -21,6 +21,22 @@ def create_app():
     @app.route("/")
     def index_redirect():
         return redirect("/lsb/")
+
+    @app.route("/explain/")
+    def explain_page():
+        return render_template("explain.html")
+
+    @app.route("/tou/")
+    def terms_of_use_page():
+        return render_template("tou.html")
+
+    @app.route("/privacy/")
+    def privacy_policy_page():
+        return render_template("privacy.html")
+
+    @app.route("/about/")
+    def about_page():
+        return render_template("about.html")
 
     @app.before_request
     def verify_host():
