@@ -3,7 +3,8 @@ from flask_talisman import Talisman
 from flask_wtf import CSRFProtect
 
 import config
-from lsb import views
+from lsb.views import bp_lsb
+from prng.views import bp_prng
 
 
 def create_app():
@@ -14,7 +15,8 @@ def create_app():
     Talisman(app, content_security_policy=csp)
     csrf = CSRFProtect()
     csrf.init_app(app)
-    app.register_blueprint(views.bp_lsb)
+    app.register_blueprint(bp_lsb)
+    app.register_blueprint(bp_prng)
 
     @app.route("/")
     def index_redirect():

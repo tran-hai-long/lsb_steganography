@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block  style %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='encode-decode.css') }}">
+{% endblock %}
+{% block title %}<title>Decode</title>{% endblock %}
+{% block main %}
+    <main>
+        {% if not result %}
+            <p class="alert-box">Currently the site only supports ASCII messages and RGB/RGBA PNG
+                images. Max image size 5MB.</p>
+        {% endif %}
+        <h2>Decode</h2>
+        <form method="POST" enctype="multipart/form-data"
+              action="{{ url_for('prng.decode_page') }}">
+            {{ form.csrf_token }}
+            <div id="form-image">
+                {{ form.image.label }}:<br>
+                {{ form.image(accept="image/png") }}
+                {% if form.image.errors %}
+                    <ul>
+                        {% for error in form.image.errors %}
+                            <li class="text-error">{{ error }}</li>{% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <br>
+            <div id="form-seed">
+                {{ form.seed.label }}:<br>
+                {{ form.seed(placeholder="Type here...") }}
+                {% if form.seed.errors %}
+                    <ul>
+                        {% for error in form.seed.errors %}
+                            <li class="text-error">{{ error }}</li>{% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <br>
+            {{ form.submit(class_="btn") }}
+            <br>
+            {% if error %}<p class="text-error">{{ error }}</p>{% endif %}
+        </form>
+        {% if result %}<p class="result-msg">{{ result }}</p>{% endif %}
+    </main>
+{% endblock %}

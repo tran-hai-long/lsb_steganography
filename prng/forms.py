@@ -1,0 +1,25 @@
+from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileRequired, FileAllowed
+from wtforms import SubmitField, RadioField, TextAreaField, StringField
+from wtforms.validators import DataRequired, AnyOf
+
+
+class EncodeForm(FlaskForm):
+    message = TextAreaField("Message", validators=[DataRequired("Message required.")])
+    image = FileField(
+        "Image",
+        validators=[
+            FileRequired("Image required."),
+            FileAllowed(["png", "jpeg", "jpg"], "PNG or JPEG image required."),
+        ],
+    )
+    submit = SubmitField("Submit")
+
+
+class DecodeForm(FlaskForm):
+    image = FileField(
+        "Image",
+        validators=[FileRequired("Image required."), FileAllowed(["png"], "PNG image required.")],
+    )
+    seed = StringField("Seed", validators=[DataRequired("Message required.")])
+    submit = SubmitField("Submit")
