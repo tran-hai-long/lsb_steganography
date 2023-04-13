@@ -2,8 +2,8 @@ from PIL import Image
 from flask import Blueprint, request
 from flask import render_template
 
-from lsb.bin_ascii import ascii_str_to_bin
-from lsb.forms import EncodeForm, DecodeForm
+from .bin_ascii import ascii_str_to_bin
+from .forms import EncodeForm, DecodeForm
 
 bp_lsb = Blueprint(
     "lsb", __name__, url_prefix="/lsb", template_folder="templates", static_folder="static"

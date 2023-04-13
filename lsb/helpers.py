@@ -4,8 +4,8 @@ from io import BytesIO
 from PIL import Image
 from filetype import filetype
 
-from lsb.bin_ascii import bin_to_ascii_str
-from lsb.views import (
+from .bin_ascii import bin_to_ascii_str
+from .views import (
     DELIMITER_LENGTH,
     BIN_DELIMITER,
     BIN_DELIMITER_LENGTH,
