@@ -1,9 +1,10 @@
-from flask import Flask, redirect, request
+from flask import Flask, request, render_template
 from flask_talisman import Talisman
 from flask_wtf import CSRFProtect
 
 import config
-from lsb import views
+from lsb.views import bp_lsb
+from prng.views import bp_prng
 
 
 def create_app():
@@ -14,11 +15,28 @@ def create_app():
     Talisman(app, content_security_policy=csp)
     csrf = CSRFProtect()
     csrf.init_app(app)
-    app.register_blueprint(views.bp_lsb)
+    app.register_blueprint(bp_lsb)
+    app.register_blueprint(bp_prng)
 
     @app.route("/")
-    def index_redirect():
-        return redirect("/lsb/")
+    def index():
+        return render_template("index.html")
+
+    @app.route("/explain/")
+    def explain_page():
+        return render_template("explain.html")
+
+    @app.route("/tou/")
+    def terms_of_use_page():
+        return render_template("tou.html")
+
+    @app.route("/privacy/")
+    def privacy_policy_page():
+        return render_template("privacy.html")
+
+    @app.route("/about/")
+    def about_page():
+        return render_template("about.html")
 
     @app.before_request
     def verify_host():

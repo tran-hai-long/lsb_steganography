@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block  style %}
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='index.css') }}">{% endblock %}
+{% block title %}<title>LSB</title>{% endblock %}
+{% block main %}
+    <main>
+        <h2>Do you want to encode or decode?</h2>
+        <div class="button-div">
+            <a href="{{ url_for('lsb.encode_page') }}"
+               class="outline-btn encode-decode-btn">Encode</a>
+            <a href="{{ url_for('lsb.decode_page') }}"
+               class="outline-btn encode-decode-btn">Decode</a>
+        </div>
+    </main>
+{% endblock %}

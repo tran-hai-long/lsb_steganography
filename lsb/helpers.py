@@ -4,9 +4,15 @@ from io import BytesIO
 from PIL import Image
 from filetype import filetype
 
-from lsb.bin_ascii import bin_to_ascii_str
-from lsb.views import DELIMITER_LENGTH, BIN_DELIMITER, BIN_DELIMITER_LENGTH, STARTER_LENGTH, BIN_STARTER, \
-    BIN_STARTER_LENGTH
+from .bin_ascii import bin_to_ascii_str
+from .views import (
+    DELIMITER_LENGTH,
+    BIN_DELIMITER,
+    BIN_DELIMITER_LENGTH,
+    STARTER_LENGTH,
+    BIN_STARTER,
+    BIN_STARTER_LENGTH,
+)
 
 
 def verify_png(file):
@@ -35,8 +41,10 @@ def verify_channel(image: Image):
             return 0
 
 
-def check_if_msg_fit_in_img(bin_msg: str, image: Image, channel: int, consumed_bits: int):
-    max_size: int = image.width * image.height * channel * consumed_bits
+def check_if_msg_fit_in_img(
+    bin_msg: str, image: Image, channel: int, consumed_bits: int
+):
+    max_size: int = (image.width * image.height * channel * consumed_bits) - 1
     return len(bin_msg) < max_size
 
 
@@ -54,13 +62,16 @@ def encode(bin_msg: str, image: Image, consumed_bits: int):
     pixel_count: int = 0
     done: bool = False
     for pixel in pixel_list:
-        # getdata() returns a list of tuples. Since tuples are immutable, it is necessary to convert them to list.
+        # getdata() returns a list of tuples. Since tuples are immutable, it is necessary to
+        # convert them to list.
         pixel: list = list(pixel)
         color_channel: int = 0
         for color in pixel:
             for bit_count in range(consumed_bits, 0, -1):
                 if bin_msg_index < len(bin_msg):
-                    pixel[color_channel] = merge_lsb(pixel[color_channel], bin_msg[bin_msg_index], bit_count)
+                    pixel[color_channel] = merge_lsb(
+                        pixel[color_channel], bin_msg[bin_msg_index], bit_count
+                    )
                     bin_msg_index += 1
                 else:
                     done = True
@@ -97,16 +108,23 @@ def decode(image: Image, consumed_bits: int):
                         no_starter = True
                         break
                 # Stop the loop when delimiter is found
-                if bin_msg_with_starter_and_delimiter[-BIN_DELIMITER_LENGTH:] == BIN_DELIMITER:
+                if (
+                    bin_msg_with_starter_and_delimiter[-BIN_DELIMITER_LENGTH:]
+                    == BIN_DELIMITER
+                ):
                     done = True
             if done or no_starter:
                 break
         if done or no_starter:
             break
     # Return an error if starter is not found, or starter is found but delimiter is not found
-    if (bin_msg_with_starter_and_delimiter[-BIN_DELIMITER_LENGTH:] != BIN_DELIMITER) or no_starter:
+    if (
+        bin_msg_with_starter_and_delimiter[-BIN_DELIMITER_LENGTH:] != BIN_DELIMITER
+    ) or no_starter:
         return "Error: Either this is not an encoded image, or you picked the wrong number of bit-per-channel."
-    result_with_starter_and_delimiter = bin_to_ascii_str(bin_msg_with_starter_and_delimiter)
+    result_with_starter_and_delimiter = bin_to_ascii_str(
+        bin_msg_with_starter_and_delimiter
+    )
     return result_with_starter_and_delimiter[STARTER_LENGTH:-DELIMITER_LENGTH]
 
 

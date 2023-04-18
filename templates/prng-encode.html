@@ -1,16 +1,17 @@
 {% extends "base.html" %}
 {% block  style %}
-    <link rel="stylesheet" href="{{ url_for('lsb.static', filename='encode-decode.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='encode-decode.css') }}">
 {% endblock %}
 {% block title %}<title>Encode</title>{% endblock %}
 {% block main %}
     <main>
         {% if not result %}
-            <p class="alert-box">Currently the site only supports ASCII messages and RGB/RGBA PNG/JPEG images. Max image
-                size 5MB.</p>
+            <p class="alert-box">Currently the site only supports ASCII messages and
+                RGB/RGBA PNG/JPEG images. Max image size 5MB.</p>
         {% endif %}
         <h2>Encode</h2>
-        <form method="POST" enctype="multipart/form-data" action="{{ url_for('lsb.encode_page') }}">
+        <form method="POST" enctype="multipart/form-data"
+              action="{{ url_for('prng.encode_page') }}">
             {{ form.csrf_token }}
             <div id="form-message">
                 {{ form.message.label }}:<br>
@@ -34,22 +35,6 @@
                 {% endif %}
             </div>
             <br>
-            <div id="form-consumed-bits">
-                {{ form.consumed_bits.label }}<br>
-                {% for choice in form.consumed_bits %}
-                    <tr>
-                        <td>{{ choice }}</td>
-                        <td>{{ choice.label }}</td>
-                    </tr>
-                {% endfor %}
-                {% if form.consumed_bits.errors %}
-                    <ul>
-                        {% for error in form.consumed_bits.errors %}
-                            <li class="text-error">{{ error }}</li>{% endfor %}
-                    </ul>
-                {% endif %}
-            </div>
-            <br>
             {{ form.submit(class_="btn") }}
             <br>
             {% if error %}<p class="text-error">{{ error }}</p>{% endif %}
@@ -57,7 +42,14 @@
         <br>
         {#    Parse result image from base64 #}
         {% if result %}
-            <div><img src="data:image/png;base64,{{ result | safe }}" alt="result image" class="result-img"></div>
+            <div class="seed">
+                <p>KEEP THIS SEED SAFE, YOU WILL NEED IT TO DECODE THE IMAGE:</p>
+                <p>{{ seed }}</p>
+            </div>
+            <div>
+                <img src="data:image/png;base64,{{ result | safe }}" alt="result image"
+                     class="result-img">
+            </div>
         {% endif %}
     </main>
 {% endblock %}
