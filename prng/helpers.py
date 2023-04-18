@@ -43,7 +43,9 @@ def verify_channel(image: Image):
             return 0
 
 
-def check_if_msg_fit_in_img(bin_msg: str, image: Image, channel: int, consumed_bits: int):
+def check_if_msg_fit_in_img(
+    bin_msg: str, image: Image, channel: int, consumed_bits: int
+):
     max_size: int = image.width * image.height * channel * consumed_bits
     return len(bin_msg) < max_size
 
@@ -63,9 +65,14 @@ def encode(bin_msg: str, image: Image, channel: int, seed: str):
     random.seed(seed)
     sample = random.sample(range(0, len(one_dimensional_color_list)), len(bin_msg))
     for color_index in sample:
-        one_dimensional_color_list[color_index] = merge_lsb(one_dimensional_color_list[color_index], bin_msg[bin_msg_index])
+        one_dimensional_color_list[color_index] = merge_lsb(
+            one_dimensional_color_list[color_index], bin_msg[bin_msg_index]
+        )
         bin_msg_index += 1
-    new_pixel_list = [tuple(one_dimensional_color_list[i:i+channel]) for i in range(0, len(one_dimensional_color_list), channel)]
+    new_pixel_list = [
+        tuple(one_dimensional_color_list[i : i + channel])
+        for i in range(0, len(one_dimensional_color_list), channel)
+    ]
     result: Image = Image.new(mode=image.mode, size=(image.width, image.height))
     result.putdata(new_pixel_list)
     return result
@@ -85,7 +92,9 @@ def decode(image: Image, seed: str):
     num_of_colors = len(one_dimensional_color_list)
     sample = random.sample(range(0, num_of_colors), (num_of_colors - 1))
     for color_index in sample:
-        bin_msg_with_starter_and_delimiter += extract_lsb(one_dimensional_color_list[color_index])
+        bin_msg_with_starter_and_delimiter += extract_lsb(
+            one_dimensional_color_list[color_index]
+        )
         # quickly check the first few bytes for STARTER to see if it's an encoded image or not.
         if len(bin_msg_with_starter_and_delimiter) == BIN_STARTER_LENGTH:
             if bin_msg_with_starter_and_delimiter != BIN_STARTER:
@@ -96,10 +105,14 @@ def decode(image: Image, seed: str):
             break
     # Return an error if starter is not found, or starter is found but delimiter is not found
     if no_starter:
-        return "Error: Either this is not an encoded image, or you entered the wrong seed."
-    if (bin_msg_with_starter_and_delimiter[-BIN_DELIMITER_LENGTH:] != BIN_DELIMITER):
+        return (
+            "Error: Either this is not an encoded image, or you entered the wrong seed."
+        )
+    if bin_msg_with_starter_and_delimiter[-BIN_DELIMITER_LENGTH:] != BIN_DELIMITER:
         return "Error: Starter found, but delimiter is not found."
-    result_with_starter_and_delimiter = bin_to_ascii_str(bin_msg_with_starter_and_delimiter)
+    result_with_starter_and_delimiter = bin_to_ascii_str(
+        bin_msg_with_starter_and_delimiter
+    )
     return result_with_starter_and_delimiter[STARTER_LENGTH:-DELIMITER_LENGTH]
 
 

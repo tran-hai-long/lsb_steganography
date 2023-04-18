@@ -57,7 +57,8 @@ class EncodeFormTest(TestCase):
         with self.test_app_context and self.test_request_context:
             form = EncodeForm()
             self.assertEqual(
-                form.consumed_bits.choices, [("1", "1bpc"), ("2", "2bpc"), ("4", "4bpc")]
+                form.consumed_bits.choices,
+                [("1", "1bpc"), ("2", "2bpc"), ("4", "4bpc")],
             )
 
     def test_consumed_bits_validator(self):
@@ -113,7 +114,8 @@ class DecodeFormTest(TestCase):
         with self.test_app_context and self.test_request_context:
             form = DecodeForm()
             self.assertEqual(
-                form.consumed_bits.choices, [("1", "1bpc"), ("2", "2bpc"), ("4", "4bpc")]
+                form.consumed_bits.choices,
+                [("1", "1bpc"), ("2", "2bpc"), ("4", "4bpc")],
             )
 
     def test_consumed_bits_validator(self):

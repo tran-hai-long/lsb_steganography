@@ -41,7 +41,9 @@ def verify_channel(image: Image):
             return 0
 
 
-def check_if_msg_fit_in_img(bin_msg: str, image: Image, channel: int, consumed_bits: int):
+def check_if_msg_fit_in_img(
+    bin_msg: str, image: Image, channel: int, consumed_bits: int
+):
     max_size: int = (image.width * image.height * channel * consumed_bits) - 1
     return len(bin_msg) < max_size
 
@@ -106,16 +108,23 @@ def decode(image: Image, consumed_bits: int):
                         no_starter = True
                         break
                 # Stop the loop when delimiter is found
-                if bin_msg_with_starter_and_delimiter[-BIN_DELIMITER_LENGTH:] == BIN_DELIMITER:
+                if (
+                    bin_msg_with_starter_and_delimiter[-BIN_DELIMITER_LENGTH:]
+                    == BIN_DELIMITER
+                ):
                     done = True
             if done or no_starter:
                 break
         if done or no_starter:
             break
     # Return an error if starter is not found, or starter is found but delimiter is not found
-    if (bin_msg_with_starter_and_delimiter[-BIN_DELIMITER_LENGTH:] != BIN_DELIMITER) or no_starter:
+    if (
+        bin_msg_with_starter_and_delimiter[-BIN_DELIMITER_LENGTH:] != BIN_DELIMITER
+    ) or no_starter:
         return "Error: Either this is not an encoded image, or you picked the wrong number of bit-per-channel."
-    result_with_starter_and_delimiter = bin_to_ascii_str(bin_msg_with_starter_and_delimiter)
+    result_with_starter_and_delimiter = bin_to_ascii_str(
+        bin_msg_with_starter_and_delimiter
+    )
     return result_with_starter_and_delimiter[STARTER_LENGTH:-DELIMITER_LENGTH]
 
 

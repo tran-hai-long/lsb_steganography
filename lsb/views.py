@@ -40,22 +40,25 @@ def encode_page():
     if request.method != "POST" or not form.validate_on_submit():
         return render_template("lsb-encode.html", form=form)
     if not verify_ascii(form.message.data):
-        return render_template("lsb-encode.html", form=form,
-                               error="ASCII characters only.")
+        return render_template(
+            "lsb-encode.html", form=form, error="ASCII characters only."
+        )
     if not verify_png_jpeg(form.image.data):
         return render_template("lsb-encode.html", form=form, error="PNG images only.")
     # Delimiter is used to signal the end of message
     msg_with_starter_and_delimiter: str = STARTER + form.message.data + DELIMITER
     bin_msg_with_starter_and_delimiter: str = ascii_str_to_bin(
-        msg_with_starter_and_delimiter)
+        msg_with_starter_and_delimiter
+    )
     consumed_bits: int = int(form.consumed_bits.data)
     image: Image = Image.open(form.image.data)
     channel: int = verify_channel(image)
     if not channel:
-        return render_template("lsb-encode.html", form=form,
-                               error="RGB or RGBA color channel only.")
+        return render_template(
+            "lsb-encode.html", form=form, error="RGB or RGBA color channel only."
+        )
     if not check_if_msg_fit_in_img(
-            bin_msg_with_starter_and_delimiter, image, channel, consumed_bits
+        bin_msg_with_starter_and_delimiter, image, channel, consumed_bits
     ):
         return render_template(
             "lsb-encode.html", form=form, error="The message does not fit in the image."
@@ -77,7 +80,8 @@ def decode_page():
     image: Image = Image.open(form.image.data)
     channel: int = verify_channel(image)
     if not channel:
-        return render_template("lsb-decode.html", form=form,
-                               error="RGB or RGBA color channel only.")
+        return render_template(
+            "lsb-decode.html", form=form, error="RGB or RGBA color channel only."
+        )
     result: str = decode(image, consumed_bits)
     return render_template("lsb-decode.html", form=form, result=result)

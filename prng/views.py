@@ -1,4 +1,5 @@
-import random, secrets
+import secrets
+
 from PIL import Image
 from flask import Blueprint, request
 from flask import render_template
@@ -41,30 +42,37 @@ def encode_page():
     if request.method != "POST" or not form.validate_on_submit():
         return render_template("prng-encode.html", form=form)
     if not verify_ascii(form.message.data):
-        return render_template("prng-encode.html", form=form,
-                               error="ASCII characters only.")
+        return render_template(
+            "prng-encode.html", form=form, error="ASCII characters only."
+        )
     if not verify_png_jpeg(form.image.data):
         return render_template("prng-encode.html", form=form, error="PNG images only.")
     # Delimiter is used to signal the end of message
     msg_with_starter_and_delimiter: str = STARTER + form.message.data + DELIMITER
     bin_msg_with_starter_and_delimiter: str = ascii_str_to_bin(
-        msg_with_starter_and_delimiter)
+        msg_with_starter_and_delimiter
+    )
     image: Image = Image.open(form.image.data)
     channel: int = verify_channel(image)
     if not channel:
-        return render_template("prng-encode.html", form=form,
-                               error="RGB or RGBA color channel only.")
+        return render_template(
+            "prng-encode.html", form=form, error="RGB or RGBA color channel only."
+        )
     if not check_if_msg_fit_in_img(
-            bin_msg_with_starter_and_delimiter, image, channel, 1
+        bin_msg_with_starter_and_delimiter, image, channel, 1
     ):
         return render_template(
-            "prng-encode.html", form=form, error="The message does not fit in the image."
+            "prng-encode.html",
+            form=form,
+            error="The message does not fit in the image.",
         )
     seed: str = secrets.token_hex(32)
     result: Image = encode(bin_msg_with_starter_and_delimiter, image, channel, seed)
     # Pillow Image objects can not be displayed in HTML, thus it is necessary to convert it to base64
     result_base64: str = buffer_and_convert_b64(result)
-    return render_template("prng-encode.html", form=form, result=result_base64, seed=seed)
+    return render_template(
+        "prng-encode.html", form=form, result=result_base64, seed=seed
+    )
 
 
 @bp_prng.route("/decode/", methods=["GET", "POST"])
@@ -78,7 +86,8 @@ def decode_page():
     image: Image = Image.open(form.image.data)
     channel: int = verify_channel(image)
     if not channel:
-        return render_template("prng-decode.html", form=form,
-                               error="RGB or RGBA color channel only.")
+        return render_template(
+            "prng-decode.html", form=form, error="RGB or RGBA color channel only."
+        )
     result: str = decode(image, seed)
     return render_template("prng-decode.html", form=form, result=result)
