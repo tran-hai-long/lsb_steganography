@@ -21,5 +21,5 @@ class DecodeForm(FlaskForm):
         "Image",
         validators=[FileRequired("Image required."), FileAllowed(["png"], "PNG image required.")],
     )
-    seed = StringField("Seed", validators=[DataRequired("Message required.")])
+    seed = TextAreaField("Seed", validators=[DataRequired("Message required.")])
     submit = SubmitField("Submit")

@@ -42,8 +42,10 @@
         <br>
         {#    Parse result image from base64 #}
         {% if result %}
-            <p>KEEP THIS SEED SAFE, YOU WILL NEED IT TO DECODE THE IMAGE:</p>
-            <p>{{ seed }}</p>
+            <div class="seed">
+                <p>KEEP THIS SEED SAFE, YOU WILL NEED IT TO DECODE THE IMAGE:</p>
+                <p>{{ seed }}</p>
+            </div>
             <div>
                 <img src="data:image/png;base64,{{ result | safe }}" alt="result image"
                      class="result-img">

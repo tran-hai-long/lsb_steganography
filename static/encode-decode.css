@@ -28,3 +28,7 @@ textarea {
 .text-error {
     color: darkred;
 }
+
+.seed {
+    text-align: center
+}

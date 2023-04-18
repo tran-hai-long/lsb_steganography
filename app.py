@@ -19,8 +19,8 @@ def create_app():
     app.register_blueprint(bp_prng)
 
     @app.route("/")
-    def index_redirect():
-        return redirect("/lsb/")
+    def index():
+        return render_template("index.html")
 
     @app.route("/explain/")
     def explain_page():
