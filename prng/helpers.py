@@ -82,8 +82,8 @@ def decode(image: Image, seed: str):
     bin_msg_with_starter_and_delimiter: str = ""
     no_starter: bool = False
     random.seed(seed)
-    # TODO: Change hardcoded sample size
-    sample = random.sample(range(0, len(one_dimensional_color_list)), 1000)
+    num_of_colors = len(one_dimensional_color_list)
+    sample = random.sample(range(0, num_of_colors), (num_of_colors - 1))
     for color_index in sample:
         bin_msg_with_starter_and_delimiter += extract_lsb(one_dimensional_color_list[color_index])
         # quickly check the first few bytes for STARTER to see if it's an encoded image or not.

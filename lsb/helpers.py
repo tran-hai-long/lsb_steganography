@@ -42,7 +42,7 @@ def verify_channel(image: Image):
 
 
 def check_if_msg_fit_in_img(bin_msg: str, image: Image, channel: int, consumed_bits: int):
-    max_size: int = image.width * image.height * channel * consumed_bits
+    max_size: int = (image.width * image.height * channel * consumed_bits) - 1
     return len(bin_msg) < max_size
 
 
