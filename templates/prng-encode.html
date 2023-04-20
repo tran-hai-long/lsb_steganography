@@ -35,6 +35,17 @@
                 {% endif %}
             </div>
             <br>
+            <div id="form-seed">
+                {{ form.seed.label }}:<br>
+                {{ form.seed(placeholder="Type here...") }}
+                {% if form.seed.errors %}
+                    <ul>
+                        {% for error in form.seed.errors %}
+                            <li class="text-error">{{ error }}</li>{% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <br>
             {{ form.submit(class_="btn") }}
             <br>
             {% if error %}<p class="text-error">{{ error }}</p>{% endif %}

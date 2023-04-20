@@ -13,6 +13,7 @@ class EncodeForm(FlaskForm):
             FileAllowed(["png", "jpeg", "jpg"], "PNG or JPEG image required."),
         ],
     )
+    seed = TextAreaField("Seed (leave empty for the site to generate a random seed)")
     submit = SubmitField("Submit")
 
 

@@ -66,7 +66,10 @@ def encode_page():
             form=form,
             error="The message does not fit in the image.",
         )
-    seed: str = secrets.token_hex(32)
+    if not form.seed.data:
+        seed: str = secrets.token_hex(32)
+    else:
+        seed: str = form.seed.data
     result: Image = encode(bin_msg_with_starter_and_delimiter, image, channel, seed)
     # Pillow Image objects can not be displayed in HTML, thus it is necessary to convert it to base64
     result_base64: str = buffer_and_convert_b64(result)
