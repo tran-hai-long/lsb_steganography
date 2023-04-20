@@ -61,14 +61,15 @@ def merge_lsb(color: int, msg_bit: str):
 def encode(bin_msg: str, image: Image, channel: int, seed: str):
     pixel_list: list = list(image.getdata())
     one_dimensional_color_list: list = list(itertools.chain.from_iterable(pixel_list))
-    bin_msg_index: int = 0
+    sample: list = list(range(len(one_dimensional_color_list)))
     random.seed(seed)
-    sample = random.sample(range(0, len(one_dimensional_color_list)), len(bin_msg))
-    for color_index in sample:
-        one_dimensional_color_list[color_index] = merge_lsb(
-            one_dimensional_color_list[color_index], bin_msg[bin_msg_index]
+    random.shuffle(sample)
+    color_index: int = 0
+    for bin_msg_index in range(len(bin_msg)):
+        one_dimensional_color_list[sample[color_index]] = merge_lsb(
+            one_dimensional_color_list[sample[color_index]], bin_msg[bin_msg_index]
         )
-        bin_msg_index += 1
+        color_index += 1
     new_pixel_list = [
         tuple(one_dimensional_color_list[i : i + channel])
         for i in range(0, len(one_dimensional_color_list), channel)
@@ -88,9 +89,9 @@ def decode(image: Image, seed: str):
     one_dimensional_color_list: list = list(itertools.chain.from_iterable(pixel_list))
     bin_msg_with_starter_and_delimiter: str = ""
     no_starter: bool = False
+    sample: list = list(range(len(one_dimensional_color_list)))
     random.seed(seed)
-    num_of_colors = len(one_dimensional_color_list)
-    sample = random.sample(range(0, num_of_colors), (num_of_colors - 1))
+    random.shuffle(sample)
     for color_index in sample:
         bin_msg_with_starter_and_delimiter += extract_lsb(
             one_dimensional_color_list[color_index]
