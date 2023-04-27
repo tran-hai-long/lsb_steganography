@@ -4,12 +4,9 @@ Hiding messages inside images using Least Significant Bit (LSB) or Pseudo-random
 Generator (PRNG) steganography. Images are processed
 by Pillow and served via Flask.
 
-## Setup
+## Installation & Usage
 
-1. Clone this repo.
-2. Create a venv virtual environment.
-3. Open terminal and run `pip install -r requirements.txt` to install dependencies.
-4. Run `flask --debug run` to start the server.
+Please see [the Wiki](https://github.com/tran-hai-long/lsb_steganography/wiki).
 
 ## Features
 
