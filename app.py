@@ -22,10 +22,6 @@ def create_app():
     def index():
         return render_template("index.html")
 
-    @app.route("/explain/")
-    def explain_page():
-        return render_template("explain.html")
-
     @app.route("/tou/")
     def terms_of_use_page():
         return render_template("tou.html")
