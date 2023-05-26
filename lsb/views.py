@@ -84,4 +84,4 @@ def decode_page():
             "lsb-decode.html", form=form, error="RGB or RGBA color channel only."
         )
     result: str = decode(image, consumed_bits)
-    return render_template("lsb-decode.html", form=form, result=result)
+    return result

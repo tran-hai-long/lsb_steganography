@@ -10,8 +10,7 @@
                 RGB/RGBA PNG images. Max image size 5MB.</p>
         {% endif %}
         <h2>Decode</h2>
-        <form method="POST" enctype="multipart/form-data"
-              action="{{ url_for('prng.decode_page') }}">
+        <form method="POST" hx-encoding="multipart/form-data" hx-post="{{ url_for('prng.decode_page') }}" hx-target="#result-msg">
             {{ form.csrf_token }}
             <div id="form-image">
                 {{ form.image.label }}:<br>
@@ -39,6 +38,6 @@
             <br>
             {% if error %}<p class="text-error">{{ error }}</p>{% endif %}
         </form>
-        {% if result %}<p class="result-msg">{{ result }}</p>{% endif %}
+        <p id="result-msg"></p>
     </main>
 {% endblock %}

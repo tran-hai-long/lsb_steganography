@@ -19,7 +19,7 @@ textarea {
     margin: auto;
 }
 
-.result-msg {
+#result-msg {
     max-width: 75vw;
     display: block;
     margin: auto;
