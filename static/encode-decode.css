@@ -13,13 +13,13 @@ textarea {
     min-height: 150px;
 }
 
-.result-img {
+#result-img {
     max-width: 75vw;
     display: block;
     margin: auto;
 }
 
-.result-msg {
+#result-msg {
     max-width: 75vw;
     display: block;
     margin: auto;
@@ -29,6 +29,6 @@ textarea {
     color: darkred;
 }
 
-.seed {
+#result-seed {
     text-align: center
 }

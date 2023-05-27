@@ -66,7 +66,7 @@ def encode_page():
     result: Image = encode(bin_msg_with_starter_and_delimiter, image, consumed_bits)
     # Pillow Image objects can not be displayed in HTML, thus it is necessary to convert it to base64
     result_base64: str = buffer_and_convert_b64(result)
-    return render_template("lsb-encode.html", form=form, result=result_base64)
+    return result_base64
 
 
 @bp_lsb.route("/decode/", methods=["GET", "POST"])

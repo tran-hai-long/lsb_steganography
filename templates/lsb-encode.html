@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block  style %}
     <link rel="stylesheet" href="{{ url_for('static', filename='encode-decode.css') }}">
+    <script src="/static/lsb-encode.js"></script>
 {% endblock %}
 {% block title %}<title>Encode</title>{% endblock %}
 {% block main %}
@@ -50,18 +51,11 @@
                     </ul>
                 {% endif %}
             </div>
-            <br>
-            {{ form.submit(class_="btn") }}
-            <br>
             {% if error %}<p class="text-error">{{ error }}</p>{% endif %}
         </form>
-        <br>
+        <button id="submit-button">Submit</button>
         {#    Parse result image from base64 #}
-        {% if result %}
-            <div>
-                <img src="data:image/png;base64,{{ result | safe }}" alt="result image"
-                     class="result-img">
-            </div>
-        {% endif %}
+        <br>
+        <img src="data:image/png;base64,{{ result | safe }}" alt="result image" id="result-img">
     </main>
 {% endblock %}

@@ -1,3 +1,4 @@
+import json
 import secrets
 
 from PIL import Image
@@ -73,9 +74,9 @@ def encode_page():
     result: Image = encode(bin_msg_with_starter_and_delimiter, image, channel, seed)
     # Pillow Image objects can not be displayed in HTML, thus it is necessary to convert it to base64
     result_base64: str = buffer_and_convert_b64(result)
-    return render_template(
-        "prng-encode.html", form=form, result=result_base64, seed=seed
-    )
+    result_dict: dict = {"result-seed": seed, "result-img": result_base64}
+    result_json = json.dumps(result_dict)
+    return result_json
 
 
 @bp_prng.route("/decode/", methods=["GET", "POST"])

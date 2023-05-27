@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block  style %}
     <link rel="stylesheet" href="{{ url_for('static', filename='encode-decode.css') }}">
+    <script src="/static/prng-encode.js"></script>
 {% endblock %}
 {% block title %}<title>Encode</title>{% endblock %}
 {% block main %}
@@ -45,22 +46,12 @@
                     </ul>
                 {% endif %}
             </div>
-            <br>
-            {{ form.submit(class_="btn") }}
-            <br>
             {% if error %}<p class="text-error">{{ error }}</p>{% endif %}
         </form>
+        <button id="submit-button">Submit</button>
         <br>
         {#    Parse result image from base64 #}
-        {% if result %}
-            <div class="seed">
-                <p>KEEP THIS SEED SAFE, YOU WILL NEED IT TO DECODE THE IMAGE:</p>
-                <p>{{ seed }}</p>
-            </div>
-            <div>
-                <img src="data:image/png;base64,{{ result | safe }}" alt="result image"
-                     class="result-img">
-            </div>
-        {% endif %}
+        <p id="result-seed">{{ seed }}</p>
+        <img src="data:image/png;base64,{{ result | safe }}" alt="result image" id="result-img">
     </main>
 {% endblock %}
