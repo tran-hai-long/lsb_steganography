@@ -1,0 +1,10 @@
+<div id="result">
+    <div id="result-seed">
+        <p>KEEP THIS SEED SAFE, YOU WILL NEED IT TO DECODE THE IMAGE:</p>
+        <p>{{ seed }}</p>
+    </div>
+    <div>
+        <img src="data:image/png;base64,{{ result | safe }}" alt="result image"
+             id="result-img">
+    </div>
+</div>

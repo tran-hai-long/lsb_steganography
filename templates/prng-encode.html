@@ -10,8 +10,8 @@
                 RGB/RGBA PNG/JPEG images. Max image size 5MB.</p>
         {% endif %}
         <h2>Encode</h2>
-        <form method="POST" enctype="multipart/form-data"
-              action="{{ url_for('prng.encode_page') }}">
+        <form method="POST" hx-encoding="multipart/form-data"
+              hx-post="{{ url_for('prng.encode_page') }}" hx-target="#result">
             {{ form.csrf_token }}
             <div id="form-message">
                 {{ form.message.label }}:<br>
@@ -52,15 +52,6 @@
         </form>
         <br>
         {#    Parse result image from base64 #}
-        {% if result %}
-            <div class="seed">
-                <p>KEEP THIS SEED SAFE, YOU WILL NEED IT TO DECODE THE IMAGE:</p>
-                <p>{{ seed }}</p>
-            </div>
-            <div>
-                <img src="data:image/png;base64,{{ result | safe }}" alt="result image"
-                     class="result-img">
-            </div>
-        {% endif %}
+        <div id="result"></div>
     </main>
 {% endblock %}

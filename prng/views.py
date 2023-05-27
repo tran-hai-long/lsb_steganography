@@ -74,7 +74,7 @@ def encode_page():
     # Pillow Image objects can not be displayed in HTML, thus it is necessary to convert it to base64
     result_base64: str = buffer_and_convert_b64(result)
     return render_template(
-        "prng-encode.html", form=form, result=result_base64, seed=seed
+        "prng-encode-result-htmx.html", result=result_base64, seed=seed
     )
 
 
