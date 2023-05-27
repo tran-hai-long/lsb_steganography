@@ -93,4 +93,4 @@ def decode_page():
             "prng-decode.html", form=form, error="RGB or RGBA color channel only."
         )
     result: str = decode(image, seed)
-    return render_template("prng-decode.html", form=form, result=result)
+    return result

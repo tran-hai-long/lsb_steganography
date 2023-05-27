@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block  style %}
     <link rel="stylesheet" href="{{ url_for('static', filename='encode-decode.css') }}">
+    <script src="/static/prng-decode.js"></script>
 {% endblock %}
 {% block title %}<title>Decode</title>{% endblock %}
 {% block main %}
@@ -34,11 +35,9 @@
                     </ul>
                 {% endif %}
             </div>
-            <br>
-            {{ form.submit(class_="btn") }}
-            <br>
             {% if error %}<p class="text-error">{{ error }}</p>{% endif %}
         </form>
-        {% if result %}<p class="result-msg">{{ result }}</p>{% endif %}
+        <button id="submit-button">Submit</button>
+        <p id="result-msg"></p>
     </main>
 {% endblock %}
